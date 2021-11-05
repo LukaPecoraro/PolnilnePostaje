@@ -1,29 +1,19 @@
 package entitete;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Time;
 
 @Entity
 public class PolnilnaPostaja {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-
-    public Integer getId() {
-        return id;
-    }
-
-
-
-
-
-
+    private Integer idPostaja;
+    private String lokacija;
+    @Temporal(TemporalType.TIME)
+    private Time uraOdprtja;
+    @Temporal(TemporalType.TIME)
+    private Time uraZaprtja;
+    private Float cenaPolnjenja;
+    private Integer tipPrikljucka;
+    private Float hitrostPolnjenja;
 }
