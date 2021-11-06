@@ -1,4 +1,4 @@
-package entitete;
+package si.fri.prpo.projektPolnilnePostaje.entitete;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

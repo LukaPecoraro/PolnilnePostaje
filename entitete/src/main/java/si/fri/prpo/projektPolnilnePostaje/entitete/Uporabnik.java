@@ -1,4 +1,4 @@
-package entitete;
+package si.fri.prpo.projektPolnilnePostaje.entitete;
 
 import jdk.jfr.Name;
 import org.eclipse.persistence.annotations.PrimaryKey;
