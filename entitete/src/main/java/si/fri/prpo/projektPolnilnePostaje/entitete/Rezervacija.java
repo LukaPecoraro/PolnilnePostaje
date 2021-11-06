@@ -4,12 +4,12 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @NamedQueries(value = {
-        @NamedQuery(name = "Rezervacija.getAll", query = "SELECT r FROM Rezervacija r"),
-        @NamedQuery(name = "Rezervacija.getById", query = "SELECT r FROM Rezervacija r WHERE r.idRezervacija = :id"),
-        @NamedQuery(name = "Rezervacija.getByPostaja", query = "SELECT r FROM Rezervacija r WHERE r.polnilnaPostaja = :polnilnaPostaja"),
-        @NamedQuery(name = "Rezervacija.getByUporabnik", query = "SELECT r FROM Rezervacija r WHERE r.uporabnik = :uporabnik"),
+        @NamedQuery(name = "Rezervacija.getAll", query = "SELECT r FROM rezervacije r"),
+        @NamedQuery(name = "Rezervacija.getById", query = "SELECT r FROM rezervacije r WHERE r.idRezervacija = :id"),
+        @NamedQuery(name = "Rezervacija.getByPostaja", query = "SELECT r FROM rezervacije r WHERE r.polnilnaPostaja = :polnilnaPostaja"),
+        @NamedQuery(name = "Rezervacija.getByUporabnik", query = "SELECT r FROM rezervacije r WHERE r.uporabnik = :uporabnik"),
 
-        @NamedQuery(name = "Rezervacija.delete", query = "DELETE FROM Rezervacija WHERE idRezervacija = :id")
+        @NamedQuery(name = "Rezervacija.delete", query = "DELETE FROM rezervacije WHERE idRezervacija = :id")
 })
 
 @Entity(name = "rezervacije")
