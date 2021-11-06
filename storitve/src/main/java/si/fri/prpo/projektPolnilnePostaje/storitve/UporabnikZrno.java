@@ -11,8 +11,6 @@ import java.util.List;
 @ApplicationScoped
 public class UporabnikZrno {
 
-        // implementacija
-
     @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
 
@@ -20,6 +18,4 @@ public class UporabnikZrno {
     public List<Uporabnik> getUporabniki() {
         return this.em.createNamedQuery("Uporabnik.getAll", Uporabnik.class).getResultList();
     }
-
-
-    }
+}

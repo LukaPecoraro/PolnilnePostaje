@@ -23,8 +23,9 @@ public class Servlet extends HttpServlet {
 
         List<Uporabnik> uporabniki = uporabnikiZrno.getUporabniki();
 
-        // izpis uporabnikov na spletno stran
-
+        for (Uporabnik uporabnik : uporabniki) {
+            System.out.println(uporabnik);
+        }
     }
 
 }
