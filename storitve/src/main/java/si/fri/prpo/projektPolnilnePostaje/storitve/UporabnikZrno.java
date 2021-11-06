@@ -1,11 +1,16 @@
 package si.fri.prpo.projektPolnilnePostaje.storitve;
 
 
+import com.kumuluz.ee.jpa.common.jta.SyncEntityManagerWrapper;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @ApplicationScoped
@@ -18,4 +23,19 @@ public class UporabnikZrno {
     public List<Uporabnik> getUporabniki() {
         return this.em.createNamedQuery("Uporabnik.getAll", Uporabnik.class).getResultList();
     }
+
+    // se criteria API
+    public List<Uporabnik> getUporabnikiCriteriaAPI() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Uporabnik> q = cb.createQuery(Uporabnik.class);
+        Root<Uporabnik> uporabniki = q.from(Uporabnik.class);
+        q.select(uporabniki);
+
+        TypedQuery<Uporabnik> query = em.createQuery(q);
+        return query.getResultList();
+
+    }
+
+
 }
