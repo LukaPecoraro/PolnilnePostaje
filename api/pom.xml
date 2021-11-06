@@ -45,7 +45,7 @@
         <plugins>
             <plugin>
                 <groupId>com.kumuluz.ee</groupId>
-                <artifactId>kumuluzee</artifactId>
+                <artifactId>kumuluzee-maven-plugin</artifactId>
                 <version>${kumuluzee.version}</version>
                 <executions>
                     <execution>
@@ -56,7 +56,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 </project>
