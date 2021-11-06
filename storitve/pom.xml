@@ -31,6 +31,10 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <dependency>
+            <groupId>si.fri.prpo.projektPolnilnePostaje</groupId>
+            <artifactId>entitete</artifactId>
+        </dependency>
 
     </dependencies>
 </project>

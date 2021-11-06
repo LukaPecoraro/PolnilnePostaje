@@ -1,5 +1,6 @@
 package si.fri.prpo.projektPolnilnePostaje.storitve;
 
+
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,6 +19,6 @@ public class UporabnikZrno {
     public List<Uporabnik> getUporabniki() {
         return this.em.createNamedQuery("Uporabnik.getAll", Uporabnik.class).getResultList();
     }
-    
+
 
     }
