@@ -1,7 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.entitete;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @NamedQueries(value = {
         @NamedQuery(name = "Rezervacija.getAll", query = "SELECT r FROM rezervacije r"),
