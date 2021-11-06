@@ -10,7 +10,7 @@ import java.util.Set;
         @NamedQuery(name = "LastnikPostaje.getAll", query = "SELECT l FROM lastniki l")
 })
 public class LastnikPostaje extends Uporabnik {
-    private Integer telefonska;
+    private String telefonska;
 
     @OneToMany
     private Set<PolnilnaPostaja> postaje;
@@ -23,11 +23,11 @@ public class LastnikPostaje extends Uporabnik {
         this.postaje = postaje;
     }
 
-    public Integer getTelefonska() {
+    public String getTelefonska() {
         return telefonska;
     }
 
-    public void setTelefonska(Integer telefonska) {
+    public void setTelefonska(String telefonska) {
         this.telefonska = telefonska;
     }
 }
