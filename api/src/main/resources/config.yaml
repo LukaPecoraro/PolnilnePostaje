@@ -5,6 +5,7 @@ kumuluzee:
     name: dev
   datasources:
     - jndi-name: jdbc/PolnilnePostajeDS
-      connection-url: jdbc:postgresql://localhost:5432/projektPostaje
+      connection-url: jdbc:postgresql://localhost:5432/postajeDB
       username: postgres
       password: postgres
+
