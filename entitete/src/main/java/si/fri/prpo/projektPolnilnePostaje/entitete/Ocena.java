@@ -31,7 +31,54 @@ public class Ocena {
 
     private String komentar;
 
+    public Integer getIdOcena() {
+        return idOcena;
+    }
 
+    public void setIdOcena(Integer idOcena) {
+        this.idOcena = idOcena;
+    }
 
+    public Uporabnik getUporabnik() {
+        return uporabnik;
+    }
 
+    public void setUporabnik(Uporabnik uporabnik) {
+        this.uporabnik = uporabnik;
+    }
+
+    public PolnilnaPostaja getPolnilnaPostaja() {
+        return polnilnaPostaja;
+    }
+
+    public void setPolnilnaPostaja(PolnilnaPostaja polnilnaPostaja) {
+        this.polnilnaPostaja = polnilnaPostaja;
+    }
+
+    public Integer getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(Integer ocena) {
+        this.ocena = ocena;
+    }
+
+    public String getKomentar() {
+        return komentar;
+    }
+
+    public void setKomentar(String komentar) {
+        this.komentar = komentar;
+    }
+
+    @Override
+    public String toString() {
+        return "Ocena{" +
+                "idOcena=" + idOcena +
+                ", uporabnik=" + uporabnik +
+                ", polnilnaPostaja=" + polnilnaPostaja +
+                ", ocena=" + ocena +
+                ", komentar='" + komentar + '\'' +
+                '}';
+    }
 }

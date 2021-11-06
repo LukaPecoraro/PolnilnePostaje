@@ -37,4 +37,64 @@ public class Rezervacija {
     @Temporal(TemporalType.TIME)
     private Date uraKonca;
 
+
+    public Integer getIdRezervacija() {
+        return idRezervacija;
+    }
+
+    public void setIdRezervacija(Integer idRezervacija) {
+        this.idRezervacija = idRezervacija;
+    }
+
+    public Uporabnik getUporabnik() {
+        return uporabnik;
+    }
+
+    public void setUporabnik(Uporabnik uporabnik) {
+        this.uporabnik = uporabnik;
+    }
+
+    public PolnilnaPostaja getPolnilnaPostaja() {
+        return polnilnaPostaja;
+    }
+
+    public void setPolnilnaPostaja(PolnilnaPostaja polnilnaPostaja) {
+        this.polnilnaPostaja = polnilnaPostaja;
+    }
+
+    public Date getDatumRezervacije() {
+        return datumRezervacije;
+    }
+
+    public void setDatumRezervacije(Date datumRezervacije) {
+        this.datumRezervacije = datumRezervacije;
+    }
+
+    public Date getUraZacetka() {
+        return uraZacetka;
+    }
+
+    public void setUraZacetka(Date uraZacetka) {
+        this.uraZacetka = uraZacetka;
+    }
+
+    public Date getUraKonca() {
+        return uraKonca;
+    }
+
+    public void setUraKonca(Date uraKonca) {
+        this.uraKonca = uraKonca;
+    }
+
+    @Override
+    public String toString() {
+        return "Rezervacija{" +
+                "idRezervacija=" + idRezervacija +
+                ", uporabnik=" + uporabnik +
+                ", polnilnaPostaja=" + polnilnaPostaja +
+                ", datumRezervacije=" + datumRezervacije +
+                ", uraZacetka=" + uraZacetka +
+                ", uraKonca=" + uraKonca +
+                '}';
+    }
 }
