@@ -11,7 +11,7 @@ import javax.persistence.*;
         @NamedQuery(name = "Ocena.delete", query = "DELETE FROM Ocena WHERE idOcena = :id")
 })
 
-@Entity
+@Entity(name = "ocene")
 public class Ocena {
 
 

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.Set;
 
-@Entity
+@Entity(name = "polnilnePostaje")
 public class PolnilnaPostaja {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

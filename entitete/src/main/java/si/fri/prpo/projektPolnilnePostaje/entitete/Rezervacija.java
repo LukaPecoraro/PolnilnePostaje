@@ -12,7 +12,7 @@ import java.sql.Date;
         @NamedQuery(name = "Rezervacija.delete", query = "DELETE FROM Rezervacija WHERE idRezervacija = :id")
 })
 
-@Entity
+@Entity(name = "rezervacije")
 public class Rezervacija {
 
     @Id
