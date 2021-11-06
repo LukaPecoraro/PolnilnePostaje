@@ -6,6 +6,10 @@ import org.eclipse.persistence.annotations.PrimaryKey;
 import javax.persistence.*;
 
 @Entity(name = "uporabniki")
+@Table
+@Inheritance(strategy= InheritanceType.JOINED)
+@DiscriminatorColumn(name="tip", discriminatorType=DiscriminatorType.STRING,length=20)
+@DiscriminatorValue("uporabnik")
 @NamedQueries(value = {
         @NamedQuery(name = "Uporabnik.getAll",
                 query = "SELECT u FROM uporabniki u"),

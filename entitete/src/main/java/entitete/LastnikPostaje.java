@@ -1,18 +1,33 @@
 package entitete;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
-@Entity
-public class LastnikPostaje {
-    private Long id;
+@Entity(name = "lastniki")
+@Table
+@DiscriminatorValue("lastnik")
+@NamedQueries(value = {
+        @NamedQuery(name = "LastnikPostaje.getAll", query = "SELECT l FROM lastniki l")
+})
+public class LastnikPostaje extends Uporabnik {
+    private Integer telefonska;
 
-    public void setId(Long id) {
-        this.id = id;
+    @OneToMany
+    private Set<PolnilnaPostaja> postaje;
+
+    public Set<PolnilnaPostaja> getPostaje() {
+        return postaje;
     }
 
-    @Id
-    public Long getId() {
-        return id;
+    public void setPostaje(Set<PolnilnaPostaja> postaje) {
+        this.postaje = postaje;
+    }
+
+    public Integer getTelefonska() {
+        return telefonska;
+    }
+
+    public void setTelefonska(Integer telefonska) {
+        this.telefonska = telefonska;
     }
 }

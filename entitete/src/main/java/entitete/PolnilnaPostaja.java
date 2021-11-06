@@ -2,6 +2,7 @@ package entitete;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.util.Set;
 
 @Entity
 public class PolnilnaPostaja {
@@ -16,4 +17,11 @@ public class PolnilnaPostaja {
     private Float cenaPolnjenja;
     private Integer tipPrikljucka;
     private Float hitrostPolnjenja;
+
+    @OneToMany
+    private Set<Ocena> ocene;
+
+    @ManyToOne
+    @JoinColumn(name = "idUporabnik")
+    private LastnikPostaje lastnik;
 }
