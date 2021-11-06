@@ -16,6 +16,7 @@ public class UporabnikZrno {
     @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
 
+    //Vrne vse uporabnike
     public List<Uporabnik> getUporabniki() {
         return this.em.createNamedQuery("Uporabnik.getAll", Uporabnik.class).getResultList();
     }
