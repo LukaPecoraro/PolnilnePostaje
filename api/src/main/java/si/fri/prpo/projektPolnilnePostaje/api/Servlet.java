@@ -1,7 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.api;
 
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
-import si.fri.prpo.projektPolnilnePostaje.storitve.UporabnikZrno;
+import si.fri.prpo.projektPolnilnePostaje.zrna.UporabnikZrno;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

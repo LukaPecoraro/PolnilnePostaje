@@ -1,7 +1,6 @@
-package si.fri.prpo.projektPolnilnePostaje.storitve;
+package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
-import com.kumuluz.ee.jpa.common.jta.SyncEntityManagerWrapper;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
 import javax.enterprise.context.ApplicationScoped;
