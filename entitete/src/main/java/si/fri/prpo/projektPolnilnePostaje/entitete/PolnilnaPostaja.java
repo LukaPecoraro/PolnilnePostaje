@@ -5,6 +5,12 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity(name = "polnilnePostaje")
+@NamedQueries(value = {
+        @NamedQuery(name = "PolnilnaPostaja.getAll",
+                query = "SELECT p FROM polnilnePostaje p"),
+        @NamedQuery(name = "PolnilnaPostaja.getById",
+                query = "SELECT p FROM polnilnePostaje p WHERE p.idPostaja = :id"),
+})
 public class PolnilnaPostaja {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
