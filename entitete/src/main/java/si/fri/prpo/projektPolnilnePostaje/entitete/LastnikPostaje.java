@@ -7,7 +7,12 @@ import java.util.Set;
 @Table
 @DiscriminatorValue("lastnik")
 @NamedQueries(value = {
-        @NamedQuery(name = "LastnikPostaje.getAll", query = "SELECT l FROM lastniki l")
+        @NamedQuery(name = "LastnikPostaje.getAll",
+                query = "SELECT l FROM lastniki l"),
+        @NamedQuery(name = "LastnikPostaje.getById",
+                query = "SELECT l FROM lastniki l WHERE l.idUporabnik = :id"),
+        @NamedQuery(name = "LastnikPostaje.getByTelefonska",
+                query = "SELECT l FROM lastniki l WHERE l.telefonska = :tel")
 })
 public class LastnikPostaje extends Uporabnik {
     private String telefonska;

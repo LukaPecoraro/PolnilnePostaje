@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -44,11 +45,10 @@ public class PolnilnicaZrno {
     }
 
     //vrne eno postajo
-    public PolnilnaPostaja getPostaja(int idPostaja){
+    public PolnilnaPostaja getPostajaById(int idPostaja){
         PolnilnaPostaja postaja = em.find(PolnilnaPostaja.class, idPostaja);
         return postaja;
     }
-
 
     // se criteria API
     public List<PolnilnaPostaja> getPostajeCriteriaAPI() {
@@ -62,6 +62,20 @@ public class PolnilnicaZrno {
         return query.getResultList();
     }
 
+    public List<PolnilnaPostaja> getPostajeByLokacija(String lokacija) {
+        List<PolnilnaPostaja> postaje = em.createNamedQuery("PolnilnaPostaja.getByLokacija")
+                .setParameter("lokacija", lokacija)
+                .getResultList();
+        return postaje;
+    }
+
+    public List<PolnilnaPostaja> getPostajeByTipPrikljucka(String prikljucek) {
+        List<PolnilnaPostaja> postaje = em.createNamedQuery("PolnilnaPostaja.getByPrikljucek")
+                .setParameter("prikljucek", prikljucek)
+                .getResultList();
+        return postaje;
+    }
+
     @Transactional
     public PolnilnaPostaja createPostaja(PolnilnaPostaja postaja){
         if (postaja != null){
@@ -71,12 +85,26 @@ public class PolnilnicaZrno {
     }
 
     @Transactional
-    public PolnilnaPostaja updatePostaja(PolnilnaPostaja postaja){
-        return null;
+    public PolnilnaPostaja updatePostaja(PolnilnaPostaja postaja, String lokacija, Date uraOdprtja,
+                                         Date uraZaprtja, Float cenaPolnjenja, Integer tipPrikljucka,
+                                         Float hitrostPolnjenja){
+        postaja.setLokacija(lokacija);
+        postaja.setUraOdprtja(uraOdprtja);
+        postaja.setUraZaprtja(uraZaprtja);
+        postaja.setCenaPolnjenja(cenaPolnjenja);
+        postaja.setTipPrikljucka(tipPrikljucka);
+        postaja.setHitrostPolnjenja(hitrostPolnjenja);
+        em.merge(postaja);
+        return postaja;
     }
 
     @Transactional
     public boolean deletePostaja(int idPostaja){
+        PolnilnaPostaja postaja = getPostajaById(idPostaja);
+        if (postaja != null) {
+            em.remove(postaja);
+            return true;
+        }
         return false;
     }
 }

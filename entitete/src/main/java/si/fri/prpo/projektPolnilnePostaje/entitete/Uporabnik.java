@@ -15,11 +15,14 @@ import javax.persistence.*;
                 query = "SELECT u FROM uporabniki u"),
         @NamedQuery(name = "Uporabnik.getById",
                 query = "SELECT u FROM uporabniki u WHERE u.idUporabnik = :id"),
+        @NamedQuery(name = "Uporabnik.getByUsername",
+                query = "SELECT u FROM uporabniki u WHERE u.uporabniskoIme LIKE :ime"),
+        @NamedQuery(name = "Uporabnik.getByEmail",
+                query = "SELECT u FROM uporabniki u WHERE u.email LIKE :email"),
         @NamedQuery(name = "Uporabnik.update",
                 query = "UPDATE uporabniki SET uporabniskoIme = :uporabniskoIme," +
                         "email = :email, kodiranoGeslo = :kodiranoGeslo WHERE idUporabnik = :id"),
         @NamedQuery(name = "Uporabnik.delete", query = "DELETE FROM uporabniki WHERE idUporabnik = :id")
-        // TODO: getRezervacije in getOcene
 })
 public class Uporabnik {
     @Id

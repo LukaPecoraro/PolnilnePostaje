@@ -45,12 +45,24 @@ public class UporabnikZrno {
     }
 
     //vrne enega uporabnika
-    public Uporabnik getUporabnik(int idUporabnik){
+    public Uporabnik getUporabnikById(int idUporabnik) {
         Uporabnik uporabnik = em.find(Uporabnik.class, idUporabnik);
-
         return uporabnik;
     }
 
+    public List<Uporabnik> getUporabnikiByIme(String uporabniskoIme) {
+        List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByUsername")
+                .setParameter("ime", uporabniskoIme)
+                .getResultList();
+        return uporabniki;
+    }
+
+    public List<Uporabnik> getUporabnikiByEmail(String email) {
+        List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByEmail")
+                .setParameter("email", email)
+                .getResultList();
+        return uporabniki;
+    }
 
     // se criteria API
     public List<Uporabnik> getUporabnikiCriteriaAPI() {
@@ -62,7 +74,6 @@ public class UporabnikZrno {
 
         TypedQuery<Uporabnik> query = em.createQuery(q);
         return query.getResultList();
-
     }
 
     @Transactional
@@ -74,25 +85,22 @@ public class UporabnikZrno {
     }
 
     @Transactional
-    public Uporabnik updateUporabnik(Uporabnik uporabnik, String uporabniskoIme){
-
-        //ummm karkol se kle ze updata
-        uporabnik.setUporabniskoIme(uporabniskoIme);
+    public Uporabnik updateUporabnik(Uporabnik uporabnik, String uporabniskoIme,
+                                     String email, String kodiranoGeslo){
+        //uporabnik.setUporabniskoIme(uporabniskoIme);
+        uporabnik.setEmail(email);
+        uporabnik.setKodiranoGeslo(kodiranoGeslo);
         em.merge(uporabnik);
-
         return uporabnik;
     }
 
     @Transactional
     public boolean deleteUporabnik(int idUporabnik){
-        Uporabnik uporabnik = getUporabnik(idUporabnik);
-
+        Uporabnik uporabnik = getUporabnikById(idUporabnik);
         if (uporabnik != null){
             em.remove(uporabnik);
             return true;
         }
         return false;
     }
-
-
 }
