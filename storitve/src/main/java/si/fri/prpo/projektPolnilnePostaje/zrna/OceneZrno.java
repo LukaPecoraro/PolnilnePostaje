@@ -53,7 +53,7 @@ public class OceneZrno {
 
 
     // se criteria API
-    public List<Ocena> getOcenaiCriteriaAPI() {
+    public List<Ocena> getOcenaCriteriaAPI() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Ocena> q = cb.createQuery(Ocena.class);
@@ -74,13 +74,16 @@ public class OceneZrno {
     }
 
     @Transactional
-    public Ocena updateOcena(Ocena ocena, String komentar, int ocenaNum){
-
-        ocena.setOcena(ocenaNum);
-        ocena.setKomentar(komentar);
-        em.merge(ocena);
-
-        return ocena;
+    public Ocena updateOcena(int idOcena, Ocena ocena){
+        Ocena instanca = getOcena(idOcena);
+        if (instanca != null) {
+            instanca.setOcena(ocena.getOcena());
+            instanca.setKomentar(ocena.getKomentar());
+            instanca.setUporabnik(ocena.getUporabnik());
+            instanca.setPolnilnaPostaja(ocena.getPolnilnaPostaja());
+            em.merge(instanca);
+        }
+        return instanca;
     }
 
     @Transactional
