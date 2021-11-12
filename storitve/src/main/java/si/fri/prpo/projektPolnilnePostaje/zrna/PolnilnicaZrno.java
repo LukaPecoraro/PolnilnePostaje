@@ -84,6 +84,7 @@ public class PolnilnicaZrno {
         return postaja;
     }
 
+    // NOTE: Lahko vrne tudi null, ce postaje ni!!
     @Transactional
     public PolnilnaPostaja updatePostaja(int idPostaja, PolnilnaPostaja postaja){
         PolnilnaPostaja instanca = getPostajaById(idPostaja);
@@ -95,9 +96,8 @@ public class PolnilnicaZrno {
             instanca.setHitrostPolnjenja(postaja.getHitrostPolnjenja());
             instanca.setCenaPolnjenja(postaja.getCenaPolnjenja());
             em.merge(instanca);
-            return instanca;
         }
-        return null;
+        return instanca;
     }
 
     @Transactional

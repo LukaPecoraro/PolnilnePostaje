@@ -51,14 +51,14 @@ public class UporabnikZrno {
     }
 
     public List<Uporabnik> getUporabnikiByIme(String uporabniskoIme) {
-        List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByUsername")
+        List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByUsername", Uporabnik.class)
                 .setParameter("ime", uporabniskoIme)
                 .getResultList();
         return uporabniki;
     }
 
     public List<Uporabnik> getUporabnikiByEmail(String email) {
-        List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByEmail")
+        List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByEmail", Uporabnik.class)
                 .setParameter("email", email)
                 .getResultList();
         return uporabniki;
@@ -84,14 +84,17 @@ public class UporabnikZrno {
         return uporabnik;
     }
 
+    // NOTE: Lahko vrne tudi null, ce uporabnika ni!!!
     @Transactional
-    public Uporabnik updateUporabnik(Uporabnik uporabnik, String uporabniskoIme,
-                                     String email, String kodiranoGeslo){
-        //uporabnik.setUporabniskoIme(uporabniskoIme);
-        uporabnik.setEmail(email);
-        uporabnik.setKodiranoGeslo(kodiranoGeslo);
-        em.merge(uporabnik);
-        return uporabnik;
+    public Uporabnik updateUporabnik(int idUporabnik, Uporabnik uporabnik){
+        Uporabnik instanca = getUporabnikById(idUporabnik);
+        if (instanca != null) {
+            instanca.setUporabniskoIme(uporabnik.getUporabniskoIme());
+            instanca.setEmail(uporabnik.getEmail());
+            instanca.setKodiranoGeslo(uporabnik.getKodiranoGeslo());
+            em.merge(uporabnik);
+        }
+        return instanca;
     }
 
     @Transactional
