@@ -8,11 +8,13 @@ import java.util.Set;
 @DiscriminatorValue("lastnik")
 @NamedQueries(value = {
         @NamedQuery(name = "LastnikPostaje.getAll",
-                query = "SELECT l FROM lastniki l"),
+                query = "SELECT DISTINCT l FROM lastniki l INNER JOIN uporabniki u WHERE l.idUporabnik = u.idUporabnik"),
         @NamedQuery(name = "LastnikPostaje.getById",
-                query = "SELECT l FROM lastniki l WHERE l.idUporabnik = :id"),
+                query = "SELECT DISTINCT l FROM lastniki l WHERE l.idUporabnik = :id"),
         @NamedQuery(name = "LastnikPostaje.getByTelefonska",
-                query = "SELECT l FROM lastniki l WHERE l.telefonska = :tel")
+                query = "SELECT l FROM lastniki l INNER JOIN uporabniki u WHERE l.telefonska = :tel AND u.idUporabnik = l.idUporabnik"),
+        @NamedQuery(name = "LastnikPostaje.getPolnilnice",
+                query = "SELECT p FROM lastniki l JOIN l.postaje p WHERE l.idUporabnik = :id")
 })
 public class LastnikPostaje extends Uporabnik {
     private String telefonska;
