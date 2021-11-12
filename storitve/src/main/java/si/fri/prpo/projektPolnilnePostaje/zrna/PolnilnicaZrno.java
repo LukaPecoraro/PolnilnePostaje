@@ -63,14 +63,14 @@ public class PolnilnicaZrno {
     }
 
     public List<PolnilnaPostaja> getPostajeByLokacija(String lokacija) {
-        List<PolnilnaPostaja> postaje = em.createNamedQuery("PolnilnaPostaja.getByLokacija")
+        List<PolnilnaPostaja> postaje = em.createNamedQuery("PolnilnaPostaja.getByLokacija", PolnilnaPostaja.class)
                 .setParameter("lokacija", lokacija)
                 .getResultList();
         return postaje;
     }
 
     public List<PolnilnaPostaja> getPostajeByTipPrikljucka(String prikljucek) {
-        List<PolnilnaPostaja> postaje = em.createNamedQuery("PolnilnaPostaja.getByPrikljucek")
+        List<PolnilnaPostaja> postaje = em.createNamedQuery("PolnilnaPostaja.getByPrikljucek", PolnilnaPostaja.class)
                 .setParameter("prikljucek", prikljucek)
                 .getResultList();
         return postaje;
@@ -85,17 +85,19 @@ public class PolnilnicaZrno {
     }
 
     @Transactional
-    public PolnilnaPostaja updatePostaja(PolnilnaPostaja postaja, String lokacija, Date uraOdprtja,
-                                         Date uraZaprtja, Float cenaPolnjenja, Integer tipPrikljucka,
-                                         Float hitrostPolnjenja){
-        postaja.setLokacija(lokacija);
-        postaja.setUraOdprtja(uraOdprtja);
-        postaja.setUraZaprtja(uraZaprtja);
-        postaja.setCenaPolnjenja(cenaPolnjenja);
-        postaja.setTipPrikljucka(tipPrikljucka);
-        postaja.setHitrostPolnjenja(hitrostPolnjenja);
-        em.merge(postaja);
-        return postaja;
+    public PolnilnaPostaja updatePostaja(int idPostaja, PolnilnaPostaja postaja){
+        PolnilnaPostaja instanca = getPostajaById(idPostaja);
+        if (instanca != null) {
+            instanca.setLokacija(postaja.getLokacija());
+            instanca.setUraOdprtja(postaja.getUraOdprtja());
+            instanca.setUraZaprtja(postaja.getUraZaprtja());
+            instanca.setTipPrikljucka(postaja.getTipPrikljucka());
+            instanca.setHitrostPolnjenja(postaja.getHitrostPolnjenja());
+            instanca.setCenaPolnjenja(postaja.getCenaPolnjenja());
+            em.merge(instanca);
+            return instanca;
+        }
+        return null;
     }
 
     @Transactional
