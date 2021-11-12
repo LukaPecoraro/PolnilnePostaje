@@ -48,7 +48,6 @@ public class RezervacijeZrno {
     //vrne eni oceno
     public Rezervacija getRezervacija(int idRezervacija){
         Rezervacija rezervacija = em.find(Rezervacija.class, idRezervacija);
-
         return rezervacija;
     }
 
@@ -60,15 +59,19 @@ public class RezervacijeZrno {
         return rezervacija;
     }
 
+    // NOTE: Lahko vrne null, ce rezervacije ni!!!
     @Transactional
-    public Rezervacija updateRezervacija(Rezervacija rezervacija, Date datumRezervacije, Date uraZacetka,Date uraKonca){
-
-        rezervacija.setDatumRezervacije(datumRezervacije);
-        rezervacija.setUraZacetka(uraZacetka);
-        rezervacija.setUraKonca(uraKonca);
-        em.merge(rezervacija);
-
-        return rezervacija;
+    public Rezervacija updateRezervacija(int idRezervacija, Rezervacija rezervacija){
+        Rezervacija instanca = getRezervacija(idRezervacija);
+        if (instanca != null) {
+            instanca.setDatumRezervacije(rezervacija.getDatumRezervacije());
+            instanca.setPolnilnaPostaja(rezervacija.getPolnilnaPostaja());
+            instanca.setUporabnik(rezervacija.getUporabnik());
+            instanca.setUraZacetka(rezervacija.getUraZacetka());
+            instanca.setUraKonca(rezervacija.getUraKonca());
+            em.merge(instanca);
+        }
+        return instanca;
     }
 
     @Transactional
