@@ -26,18 +26,18 @@ public class UpravljanjePolnilnicZrno {
     @Inject
     private UporabnikZrno uz;
 
-    private Logger log = Logger.getLogger(PolnilnicaZrno.class.getName());
+    private Logger log = Logger.getLogger(UpravljanjePolnilnicZrno.class.getName());
 
     @PostConstruct
     private void init(){
-        log.info("Inicializacija zrna " + PolnilnicaZrno.class.getSimpleName());
+        log.info("Inicializacija zrna " + UpravljanjePolnilnicZrno.class.getSimpleName());
 
         //init virov
     }
 
     @PreDestroy
     private void destroy(){
-        log.info("Deinicializacija zrna " + PolnilnicaZrno.class.getSimpleName());
+        log.info("Deinicializacija zrna " + UpravljanjePolnilnicZrno.class.getSimpleName());
 
         //zapiranje virov
     }

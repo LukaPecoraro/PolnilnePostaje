@@ -39,8 +39,12 @@ public class PolnilnaPostaja {
     private Integer tipPrikljucka;
     private Float hitrostPolnjenja;
 
-    @OneToMany
+    @OneToMany(mappedBy = "polnilnaPostaja")
     private Set<Ocena> ocene;
+
+    @OneToMany(mappedBy = "polnilnaPostaja")
+    private Set<Rezervacija> rezervacije;
+
 
     @ManyToOne
     @JoinColumn(name = "idUporabnik")
@@ -108,5 +112,17 @@ public class PolnilnaPostaja {
 
     public LastnikPostaje getLastnik() {
         return lastnik;
+    }
+
+    public void setOcene(Set<Ocena> ocene) {
+        this.ocene = ocene;
+    }
+
+    public Set<Rezervacija> getRezervacije() {
+        return rezervacije;
+    }
+
+    public void setRezervacije(Set<Rezervacija> rezervacije) {
+        this.rezervacije = rezervacije;
     }
 }

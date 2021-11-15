@@ -4,6 +4,7 @@ import jdk.jfr.Name;
 import org.eclipse.persistence.annotations.PrimaryKey;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "uporabniki")
 @Table
@@ -31,6 +32,10 @@ public class Uporabnik {
     private String uporabniskoIme;
     private String email;
     private String kodiranoGeslo;
+
+    @OneToMany(mappedBy = "uporabnik")
+    private List<Rezervacija> rezervacije;
+
 
     public Integer getIdUporabnik() {
         return idUporabnik;
@@ -62,6 +67,14 @@ public class Uporabnik {
 
     public void setKodiranoGeslo(String kodiranoGeslo) {
         this.kodiranoGeslo = kodiranoGeslo;
+    }
+
+    public List<Rezervacija> getRezervacije() {
+        return rezervacije;
+    }
+
+    public void setRezervacije(List<Rezervacija> rezervacije) {
+        this.rezervacije = rezervacije;
     }
 
     @Override
