@@ -2,6 +2,8 @@ package si.fri.prpo.projektPolnilnePostaje.api;
 
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UporabnikZrno;
+import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjePolnilnicZrno;
+import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeRezervacijZrno;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -18,6 +20,11 @@ public class Servlet extends HttpServlet {
 
     @Inject
     private UporabnikZrno uporabnikiZrno;
+
+    @Inject
+    private UpravljanjePolnilnicZrno upz;
+    @Inject
+    private UpravljanjeRezervacijZrno urz;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,6 +43,11 @@ public class Servlet extends HttpServlet {
             mojPrinter.println("Criteria API: " + uporabnik);
         }
 
+        mojPrinter.printf("UpravljanjePolnilnicZrno ima UUID ob 1. klicu: %s\n", upz.izpisiUUID().toString());
+        mojPrinter.printf("UpravljanjePolnilnicZrno ima UUID ob 2. klicu: %s\n", upz.izpisiUUID().toString());
+
+        mojPrinter.printf("UpravljanjeRezervacijZrno ima UUID ob 1. klicu: %s\n", urz.izpisiUUID().toString());
+        mojPrinter.printf("UpravljanjeRezervacijZrno ima UUID ob 2. klicu: %s\n", upz.izpisiUUID().toString());
     }
 
 }

@@ -12,6 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -27,6 +28,7 @@ public class UpravljanjePolnilnicZrno {
     private UporabnikZrno uz;
 
     private Logger log = Logger.getLogger(UpravljanjePolnilnicZrno.class.getName());
+    private UUID uid = UUID.randomUUID();
 
     @PostConstruct
     private void init(){
@@ -104,5 +106,10 @@ public class UpravljanjePolnilnicZrno {
             log.info("GET Postaja(ID): Postaja ne obstaja.");
         }
         return postaja;
+    }
+
+    public UUID izpisiUUID() {
+        log.info("Zrno je obsega @ApplicationScope in ima UUID: " + uid);
+        return uid;
     }
 }

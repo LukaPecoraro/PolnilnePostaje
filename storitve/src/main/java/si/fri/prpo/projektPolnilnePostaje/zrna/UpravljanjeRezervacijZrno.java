@@ -10,11 +10,15 @@ import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
+@RequestScoped
 public class UpravljanjeRezervacijZrno {
     @Inject
     private PolnilnicaZrno pz;
@@ -26,6 +30,7 @@ public class UpravljanjeRezervacijZrno {
     private RezervacijeZrno rz;
 
     private Logger log = Logger.getLogger(UpravljanjeRezervacijZrno.class.getName());
+    private UUID uid = UUID.randomUUID();
 
     @PostConstruct
     private void init(){
@@ -70,6 +75,10 @@ public class UpravljanjeRezervacijZrno {
         return rz.createRezervacija(novaRezervacija);
     }
 
+    public UUID izpisiUUID() {
+        log.info("Zrno je obsega @RequestScoped in ima UUID: " + uid);
+        return uid;
+    }
 }
 
 
