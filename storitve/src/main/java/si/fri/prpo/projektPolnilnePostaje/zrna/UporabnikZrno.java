@@ -2,6 +2,7 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
+import si.fri.prpo.projektPolnilnePostaje.prestrezniki.BeleziKlice;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -40,16 +41,19 @@ public class UporabnikZrno {
     private EntityManager em;
 
     //Vrne vse uporabnike
+    @BeleziKlice
     public List<Uporabnik> getUporabniki() {
         return this.em.createNamedQuery("Uporabnik.getAll", Uporabnik.class).getResultList();
     }
 
     //vrne enega uporabnika
+    @BeleziKlice
     public Uporabnik getUporabnikById(int idUporabnik) {
         Uporabnik uporabnik = em.find(Uporabnik.class, idUporabnik);
         return uporabnik;
     }
 
+    @BeleziKlice
     public List<Uporabnik> getUporabnikiByIme(String uporabniskoIme) {
         List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByUsername", Uporabnik.class)
                 .setParameter("ime", uporabniskoIme)
@@ -57,6 +61,7 @@ public class UporabnikZrno {
         return uporabniki;
     }
 
+    @BeleziKlice
     public List<Uporabnik> getUporabnikiByEmail(String email) {
         List<Uporabnik> uporabniki = em.createNamedQuery("Uporabnik.getByEmail", Uporabnik.class)
                 .setParameter("email", email)
