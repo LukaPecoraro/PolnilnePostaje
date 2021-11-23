@@ -2,6 +2,7 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
+import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -40,11 +41,13 @@ public class OceneZrno {
     private EntityManager em;
 
     //Vrne vse ocene
-    public List<Ocena> getOcene() {
-        return this.em.createNamedQuery("Ocena.getAll", Ocena.class).getResultList();
+    public List<Ocena> getOceneZaPostajo(PolnilnaPostaja idPostaje) {
+        return this.em.createNamedQuery("Ocena.getByPostaja", Ocena.class)
+                .setParameter("polnilnaPostaja", idPostaje)
+                .getResultList();
     }
 
-    //vrne eni oceno
+    //vrne eno oceno
     public Ocena getOcena(int idOcena){
         Ocena ocena = em.find(Ocena.class, idOcena);
 

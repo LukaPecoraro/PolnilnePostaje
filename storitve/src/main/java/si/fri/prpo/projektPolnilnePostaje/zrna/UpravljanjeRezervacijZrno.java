@@ -75,6 +75,31 @@ public class UpravljanjeRezervacijZrno {
         return rz.createRezervacija(novaRezervacija);
     }
 
+    public List<Rezervacija> vrniRezervacije() {
+        return rz.getRezervacije();
+    }
+
+    public Rezervacija vrniRezervacijo(int idRezervacija){
+        Rezervacija rezervacija = rz.getRezervacija(idRezervacija);
+        if (rezervacija != null) {
+            log.info("Rezervacija " + rezervacija.getIdRezervacija() + " najdena.");
+        } else {
+            log.info("Rezervacija " + idRezervacija + " ni bila najdena.");
+        }
+        return rezervacija;
+    }
+
+    @Transactional
+    public boolean izbrisiRezervacijo(int idRezervacija) {
+        boolean uspeh = rz.deleteRezervacija(idRezervacija);
+        if (uspeh) {
+            log.info("Rezervacija " + idRezervacija + " izbrisana.");
+        } else {
+            log.info("Rezervacija ni bila najdena.");
+        }
+        return uspeh;
+    }
+
     public UUID izpisiUUID() {
         log.info("Zrno je obsega @RequestScoped in ima UUID: " + uid);
         return uid;

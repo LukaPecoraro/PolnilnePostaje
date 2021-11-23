@@ -41,7 +41,7 @@ public class RezervacijeZrno {
     private EntityManager em;
 
     //Vrne vse ocene
-    public List<Rezervacija> getOcene() {
+    public List<Rezervacija> getRezervacije() {
         return this.em.createNamedQuery("Rezervacija.getAll", Rezervacija.class).getResultList();
     }
 

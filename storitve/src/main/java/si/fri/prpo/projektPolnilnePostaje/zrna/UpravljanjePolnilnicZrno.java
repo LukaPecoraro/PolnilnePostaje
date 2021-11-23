@@ -3,6 +3,7 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.PoizvedbaPoPostajiDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
@@ -23,6 +24,9 @@ public class UpravljanjePolnilnicZrno {
 
     @Inject
     private LastnikZrno lz;
+
+    @Inject
+    private OceneZrno oz;
 
     @Inject
     private UporabnikZrno uz;
@@ -89,19 +93,34 @@ public class UpravljanjePolnilnicZrno {
         return pz.updatePostaja(dto.getIdPostaja(), novaPs);
     }
 
+    @Transactional
+    public boolean izbrisiPostajo(int id) {
+        boolean uspeh = pz.deletePostaja(id);
+        if (uspeh) {
+            log.info("Izbris uspesen.");
+        } else {
+            log.info("Izbris neuspesen.");
+        }
+        return uspeh;
+    }
+
+    public List<Ocena> vrniOcene(int idPostaje) {
+        PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
+        return oz.getOceneZaPostajo(postaja);
+    }
+
     public List<PolnilnaPostaja> vrniPostaje() {
         return pz.getPostaje();
     }
 
     // NOTE: Lahko vrne null!!
-    public PolnilnaPostaja vrniPostajoPoId(PoizvedbaPoPostajiDTO dto) {
-        Integer idPostaja = dto.getIdPostaja();
-        if (idPostaja == null) {
+    public PolnilnaPostaja vrniPostajoPoId(Integer id) {
+        if (id == null) {
             log.info("GET Postaja(ID): Manjka argument idPostaja.");
             return null;
         }
 
-        PolnilnaPostaja postaja = pz.getPostajaById(idPostaja);
+        PolnilnaPostaja postaja = pz.getPostajaById(id);
         if (postaja == null) {
             log.info("GET Postaja(ID): Postaja ne obstaja.");
         }
