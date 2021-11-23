@@ -5,6 +5,7 @@ import si.fri.prpo.projektPolnilnePostaje.dtoji.PoizvedbaPoPostajiDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
 import javax.annotation.PostConstruct;
@@ -23,10 +24,10 @@ public class UpravljanjePolnilnicZrno {
     private PolnilnicaZrno pz;
 
     @Inject
-    private LastnikZrno lz;
+    private OceneZrno oz;
 
     @Inject
-    private OceneZrno oz;
+    private RezervacijeZrno rz;
 
     @Inject
     private UporabnikZrno uz;
@@ -72,7 +73,7 @@ public class UpravljanjePolnilnicZrno {
 
     // NOTE: Je lahko null!
     @Transactional
-    public PolnilnaPostaja posodobiPostajo(UrejanjePostajeDTO dto) {
+    public PolnilnaPostaja posodobiPostajo(UrejanjePostajeDTO dto, int id) {
         PolnilnaPostaja ps = pz.getPostajaById(dto.getIdPostaja());
 
         if (ps == null) {
@@ -90,7 +91,7 @@ public class UpravljanjePolnilnicZrno {
 
         // TODO: Se lastnika!
 
-        return pz.updatePostaja(dto.getIdPostaja(), novaPs);
+        return pz.updatePostaja(id, novaPs);
     }
 
     @Transactional
@@ -106,7 +107,18 @@ public class UpravljanjePolnilnicZrno {
 
     public List<Ocena> vrniOcene(int idPostaje) {
         PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
-        return oz.getOceneZaPostajo(postaja);
+        if (postaja != null) {
+            return oz.getOceneZaPostajo(postaja);
+        }
+        return null;
+    }
+
+    public List<Rezervacija> vrniRezervacije(int idPostaje) {
+        PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
+        if (postaja != null) {
+            return rz.getRezervacijeByPostaja(postaja);
+        }
+        return null;
     }
 
     public List<PolnilnaPostaja> vrniPostaje() {

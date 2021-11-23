@@ -19,7 +19,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
-public class UporabnikiVir {
+public class UporabnikiViri {
 
     @Context
     protected UriInfo uriInfo;

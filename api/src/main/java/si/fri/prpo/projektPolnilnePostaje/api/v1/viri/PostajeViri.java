@@ -1,12 +1,11 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.zrna.OceneZrno;
-import si.fri.prpo.projektPolnilnePostaje.zrna.PolnilnicaZrno;
-import si.fri.prpo.projektPolnilnePostaje.zrna.RezervacijeZrno;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjePolnilnicZrno;
 
 
@@ -29,21 +28,21 @@ public class PostajeViri {
     protected UriInfo uriInfo;
 
     @Inject
-    private UpravljanjePolnilnicZrno polnilnicaZrno;
+    private UpravljanjePolnilnicZrno upz;
 
     @Inject
     private OceneZrno oceneZrno;
 
     @GET
     public Response getPolnilnaPostaje(){
-        List<PolnilnaPostaja> postaje = polnilnicaZrno.vrniPostaje();
+        List<PolnilnaPostaja> postaje = upz.vrniPostaje();
         return Response.status(Response.Status.OK).entity(postaje).build();
     }
 
     @GET
-    @Path("{idPolnilnaPostaja}")
-    public Response getPolnilnaPostaja(@PathParam("idPolnilnaPostaja") Integer idPolnilnaPostaja) {
-        PolnilnaPostaja postaja = polnilnicaZrno.vrniPostajoPoId(idPolnilnaPostaja);
+    @Path("{idPostaje}")
+    public Response getPolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje) {
+        PolnilnaPostaja postaja = upz.vrniPostajoPoId(idPostaje);
         return postaja != null
                 ? Response.ok(postaja).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
@@ -51,17 +50,27 @@ public class PostajeViri {
 
     @POST
     public Response addPolnilnaPostaja(DodajanjePostajeDTO postaja) {
-        PolnilnaPostaja ps = polnilnicaZrno.dodajPostajo(postaja);
+        PolnilnaPostaja ps = upz.dodajPostajo(postaja);
         if (ps != null) {
             return Response.status(Response.Status.CREATED).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
+    @PUT
+    @Path("{idPostaje}")
+    public Response changePolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje, UrejanjePostajeDTO dto) {
+        PolnilnaPostaja ps = upz.posodobiPostajo(dto, idPostaje);
+        if (ps != null) {
+            return Response.status(Response.Status.OK).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
     @DELETE
-    @Path("{idPolnilnaPostaja}")
-    public Response deletePolnilnaPostaja(@PathParam("idPolnilnaPostaja") Integer idPolnilnaPostaja) {
-        boolean uspeh = polnilnicaZrno.izbrisiPostajo(idPolnilnaPostaja);
+    @Path("{idPostaje}")
+    public Response deletePolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje) {
+        boolean uspeh = upz.izbrisiPostajo(idPostaje);
         if (uspeh) {
             return Response.status(Response.Status.OK).build();
         }
@@ -71,7 +80,20 @@ public class PostajeViri {
     @GET
     @Path("{idPostaje}/ocene")
     public Response getOcenePostaje(@PathParam("idPostaje") Integer idPostaje) {
-        List<Ocena> ocene = polnilnicaZrno.vrniOcene(idPostaje);
-        return Response.status(Response.Status.OK).entity(ocene).build();
+        List<Ocena> ocene = upz.vrniOcene(idPostaje);
+        if (ocene != null) {
+            return Response.status(Response.Status.OK).entity(ocene).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("{idPostaje}/rezervacije")
+    public Response getRezervacijePostaje(@PathParam("idPostaje") Integer idPostaje) {
+        List<Rezervacija> rezervacije = upz.vrniRezervacije(idPostaje);
+        if (rezervacije != null) {
+            return Response.status(Response.Status.OK).entity(rezervacije).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 }

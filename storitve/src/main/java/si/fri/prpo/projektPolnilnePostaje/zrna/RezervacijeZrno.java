@@ -1,6 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
+import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +44,12 @@ public class RezervacijeZrno {
     //Vrne vse ocene
     public List<Rezervacija> getRezervacije() {
         return this.em.createNamedQuery("Rezervacija.getAll", Rezervacija.class).getResultList();
+    }
+
+    public List<Rezervacija> getRezervacijeByPostaja(PolnilnaPostaja ps) {
+        return this.em.createNamedQuery("Rezervacija.getByPostaja", Rezervacija.class)
+                .setParameter("polnilnaPostaja", ps)
+                .getResultList();
     }
 
     //vrne eni oceno
