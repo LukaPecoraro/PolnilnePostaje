@@ -1,7 +1,9 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeOceneDTO;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.zrna.OceneZrno;
-import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjePolnilnicZrno;
+import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeOcenZrno;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,29 +25,46 @@ public class OceneViri {
     @Inject
     private OceneZrno oceneZrno;
 
-    // TODO
+    @Inject
+    private UpravljanjeOcenZrno upravljanjeOcenZrno;
+
+
     @GET
     @Path("{id}")
     public Response getOcene(@PathParam("id") Integer id) {
-        return null;
+        Ocena ocena = oceneZrno.getOcena(id);
+        return ocena != null
+                ? Response.ok(ocena).build()
+                : Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    // TODO
     @POST
     @Path("")
-    public Response postOcena() {
-        return Response.status(Response.Status.FORBIDDEN).build();
+    public Response postOcena(UrejanjeOceneDTO ocenaDTO) {
+        Ocena ocena = upravljanjeOcenZrno.dodajOceno(ocenaDTO);
+        if (ocena != null) {
+            return Response.status(Response.Status.CREATED).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @PUT
     @Path("{id}")
-    public Response putOcena(@PathParam("id") Integer id) {
-        return Response.status(Response.Status.FORBIDDEN).build();
+    public Response putOcena(@PathParam("id") Integer id, UrejanjeOceneDTO ocenaDTO) {
+        Ocena ocena = upravljanjeOcenZrno.posodobiOceno(ocenaDTO, id);
+        if (ocena != null) {
+            return Response.status(Response.Status.CREATED).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteOcena(@PathParam("id") Integer id) {
-        return Response.status(Response.Status.FORBIDDEN).build();
+        boolean uspeh = upravljanjeOcenZrno.izbrisiOceno(id);
+        if (uspeh) {
+            return Response.status(Response.Status.OK).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 }
