@@ -61,15 +61,24 @@ public class RezervacijeZrno {
     @Transactional
     public Rezervacija createRezervacija(Rezervacija rezervacija){
         if (rezervacija != null){
-            em.persist(rezervacija);
+            List<Rezervacija> seznamIstoleznih = em.createNamedQuery("Rezervacija.getByPostajaAndTime", Rezervacija.class)
+                    .setParameter("uraZacetka", rezervacija.getUraZacetka())
+                    .setParameter("uraKonca", rezervacija.getUraZacetka())
+                    .setParameter("datum", rezervacija.getDatumRezervacije())
+                    .getResultList();
+            if (seznamIstoleznih.isEmpty()) {
+                em.persist(rezervacija);
+            }
         }
-        return rezervacija;
+        return null;
     }
 
     // NOTE: Lahko vrne null, ce rezervacije ni!!!
+    // TODO: Preveri, da ni prekrivanj!!!
     @Transactional
     public Rezervacija updateRezervacija(int idRezervacija, Rezervacija rezervacija){
         Rezervacija instanca = getRezervacija(idRezervacija);
+
         if (instanca != null) {
             instanca.setDatumRezervacije(rezervacija.getDatumRezervacije());
             instanca.setPolnilnaPostaja(rezervacija.getPolnilnaPostaja());
@@ -91,6 +100,4 @@ public class RezervacijeZrno {
         }
         return false;
     }
-
-
 }

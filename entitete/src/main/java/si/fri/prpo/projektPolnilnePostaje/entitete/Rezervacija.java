@@ -13,7 +13,10 @@ import java.util.Date;
         @NamedQuery(name = "Rezervacija.getByUporabnik",
                 query = "SELECT r FROM rezervacije r WHERE r.uporabnik = :uporabnik"),
         @NamedQuery(name = "Rezervacija.delete",
-                query = "DELETE FROM rezervacije WHERE idRezervacija = :id")
+                query = "DELETE FROM rezervacije WHERE idRezervacija = :id"),
+        @NamedQuery(name = "Rezervacija.getByPostajaAndTime",
+                query = "SELECT r FROM rezervacije r WHERE ((r.uraZacetka BETWEEN :uraZacetka AND :uraKonca)" +
+                        "OR (r.uraKonca BETWEEN :uraZacetka AND :uraKonca)) AND r.datumRezervacije = :datum")
 })
 @Entity(name = "rezervacije")
 public class Rezervacija {
