@@ -30,9 +30,6 @@ public class PostajeViri {
     @Inject
     private UpravljanjePolnilnicZrno upz;
 
-    @Inject
-    private OceneZrno oceneZrno;
-
     @GET
     public Response getPolnilnaPostaje(){
         List<PolnilnaPostaja> postaje = upz.vrniPostaje();
