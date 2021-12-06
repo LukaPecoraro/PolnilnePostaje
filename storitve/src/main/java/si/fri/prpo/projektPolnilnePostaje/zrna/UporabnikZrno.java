@@ -1,6 +1,8 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 import si.fri.prpo.projektPolnilnePostaje.prestrezniki.BeleziKlice;
 
@@ -44,6 +46,15 @@ public class UporabnikZrno {
     @BeleziKlice
     public List<Uporabnik> getUporabniki() {
         return this.em.createNamedQuery("Uporabnik.getAll", Uporabnik.class).getResultList();
+    }
+
+    // se medota da s queryParameters pridobi, za paging pa sorting
+    public List<Uporabnik> getUporabniki(QueryParameters query) {
+        return JPAUtils.queryEntities(em, Uporabnik.class, query);
+    }
+
+    public Long getUporabnikiCount(QueryParameters query){
+        return JPAUtils.queryEntitiesCount(em, Uporabnik.class, query);
     }
 
     //vrne enega uporabnika

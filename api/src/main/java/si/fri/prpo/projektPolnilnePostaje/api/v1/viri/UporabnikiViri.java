@@ -27,11 +27,16 @@ public class UporabnikiViri {
     @Inject
     private UporabnikZrno uporabnikZrno;
 
-
     @GET
     public Response getUporabniki(){
-        List<Uporabnik> uporabniki = uporabnikZrno.getUporabniki();
-        return Response.status(Response.Status.OK).entity(uporabniki).build();
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+
+        Long uporabnikiCount = uporabnikZrno.getUporabnikiCount(query);
+
+        return Response
+                .ok(uporabnikZrno.getUporabniki(query))
+                .header("X-Total-Count", uporabnikiCount)
+                .build();
     }
 
     @GET
