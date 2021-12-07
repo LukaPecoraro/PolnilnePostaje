@@ -14,6 +14,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <kumuluzee-openapi.version>1.4.0</kumuluzee-openapi.version>
     </properties>
 
     <dependencies>
@@ -47,6 +48,23 @@
             <artifactId>kumuluzee-rest-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.kumuluz.ee.openapi</groupId>
+            <artifactId>kumuluzee-openapi-mp</artifactId>
+            <version>${kumuluzee-openapi.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.config</groupId>
+            <artifactId>kumuluzee-config-mp</artifactId>
+            <version>${kumuluzee-openapi.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.openapi</groupId>
+            <artifactId>kumuluzee-openapi-mp-ui</artifactId>
+            <version>${kumuluzee-openapi.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>si.fri.prpo.projektPolnilnePostaje</groupId>

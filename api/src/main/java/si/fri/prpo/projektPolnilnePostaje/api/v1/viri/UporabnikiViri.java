@@ -2,6 +2,12 @@ package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UporabnikZrno;
 
@@ -28,6 +34,11 @@ public class UporabnikiViri {
     private UporabnikZrno uporabnikZrno;
 
     @GET
+    @Operation(summary = "Pridobi uporabnike",
+            description = "Pridobi seznam uporabnikov z možnostjo paginacije in sortiranja.")
+    @APIResponses({
+            @APIResponse(description = "Seznam uporabnikov", responseCode = "200")
+    })
     public Response getUporabniki(){
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
 
@@ -40,6 +51,14 @@ public class UporabnikiViri {
     }
 
     @GET
+    @Operation(summary = "Pridobi določenega uporabnika",
+            description = "Pridobi izbranega uporabnika prek njegovega identifikatorja")
+    @APIResponses({
+            @APIResponse(description = "Uporabnik",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Uporabnik.class)),
+                    headers = {@Header(name = "X-Total-Count")})
+    })
     @Path("{idUporabnik}")
     public Response getUporabnik(@PathParam("idUporabnik") Integer idUporabnik) {
         Uporabnik uporabnik = uporabnikZrno.getUporabnikById(idUporabnik);
