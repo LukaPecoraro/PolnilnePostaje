@@ -11,8 +11,9 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
-import si.fri.prpo.projektPolnilnePostaje.zrna.UporabnikZrno;
+import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeUporabnikovZrno;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -21,7 +22,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.List;
 
 
 @Path("uporabniki")
@@ -34,7 +34,7 @@ public class UporabnikiViri {
     protected UriInfo uriInfo;
 
     @Inject
-    private UporabnikZrno uporabnikZrno;
+    private UpravljanjeUporabnikovZrno uz;
 
     @GET
     @Operation(summary = "Seznam uporabnikov",
@@ -48,10 +48,10 @@ public class UporabnikiViri {
     public Response getUporabniki(){
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
 
-        Long uporabnikiCount = uporabnikZrno.getUporabnikiCount(query);
+        Long uporabnikiCount = uz.vrniSteviloUporabnikov(query);
 
         return Response
-                .ok(uporabnikZrno.getUporabniki(query))
+                .ok(uz.vrniUporabnike(query))
                 .header("X-Total-Count", uporabnikiCount)
                 .build();
     }
@@ -69,7 +69,7 @@ public class UporabnikiViri {
     public Response getUporabnik(@Parameter(
             description = "ID uporabnika",
             required = true) @PathParam("idUporabnik") Integer idUporabnik) {
-        Uporabnik uporabnik = uporabnikZrno.getUporabnikById(idUporabnik);
+        Uporabnik uporabnik = uz.vrniUporabnikaPoId(idUporabnik);
         return uporabnik != null
                 ? Response.ok(uporabnik).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
@@ -88,8 +88,8 @@ public class UporabnikiViri {
             description = "ODT objekt za novega uporabnika",
             required = true,
             content = @Content(schema = @Schema(implementation = Uporabnik.class)))
-                                             Uporabnik uporabnik) {
-        Uporabnik u = uporabnikZrno.createUporabnik(uporabnik);
+                                         DodajanjeUporabnikaDTO uporabnik) {
+        Uporabnik u = uz.dodajUporabnika(uporabnik);
         return Response
                 .status(Response.Status.CREATED)
                 .entity(u)
@@ -110,7 +110,10 @@ public class UporabnikiViri {
             description = "ID uporabnika",
             required = true)
                                         @PathParam("idUporabnik") Integer idUporabnik) {
-        uporabnikZrno.deleteUporabnik(idUporabnik);
-        return Response.status(Response.Status.OK).build();
+        if (uz.izbrisiUporabnika(idUporabnik)) {
+            return Response.status(Response.Status.OK).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

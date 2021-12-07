@@ -4,5 +4,6 @@
        bean-discovery-mode="annotated">
     <interceptors>
         <class>si.fri.prpo.projektPolnilnePostaje.prestrezniki.BelezenjeKlicevInterceptor</class>
+        <class>si.fri.prpo.projektPolnilnePostaje.prestrezniki.ValidacijaPodatkovInterceptor</class>
     </interceptors>
 </beans>
