@@ -1,12 +1,12 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.PoizvedbaPoPostajiDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
+import si.fri.prpo.projektPolnilnePostaje.prestrezniki.ValidirajDtoje;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -51,6 +51,7 @@ public class UpravljanjePolnilnicZrno {
 
     // NOTE: Lahko vrne null!!
     @Transactional
+    @ValidirajDtoje
     public PolnilnaPostaja dodajPostajo(DodajanjePostajeDTO dto) {
         Uporabnik uporabnik = uz.getUporabnikById(dto.getIdLastnik());
         if (uporabnik == null) {

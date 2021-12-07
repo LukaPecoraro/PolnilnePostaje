@@ -1,7 +1,9 @@
 package si.fri.prpo.projektPolnilnePostaje.prestrezniki;
 
+import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
-import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavenUporabnikDtoIzjema;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.zrna.PrestrezanjeNapakZrno;
 
 import javax.inject.Inject;
@@ -11,7 +13,7 @@ import javax.interceptor.InvocationContext;
 import java.util.logging.Logger;
 
 @Interceptor
-@ValidirajUporabnike
+@ValidirajDtoje
 public class ValidacijaPodatkovInterceptor {
 
     @Inject
@@ -21,10 +23,14 @@ public class ValidacijaPodatkovInterceptor {
 
     @AroundInvoke
     public Object validacijaUporabnikov(InvocationContext context) throws Exception {
-        if (context.getParameters().length == 1 &&
-                context.getParameters()[0] instanceof DodajanjeUporabnikaDTO) {
-            DodajanjeUporabnikaDTO uporabnik = (DodajanjeUporabnikaDTO) context.getParameters()[0];
-            pnz.validirajDodajanjeUporabnikaDTO(uporabnik);
+        if (context.getParameters().length == 1) {
+            Object o = context.getParameters()[0];
+            if (o instanceof DodajanjeUporabnikaDTO) {
+                pnz.validirajDodajanjeUporabnikaDTO((DodajanjeUporabnikaDTO) o);
+            }
+            if (o instanceof DodajanjePostajeDTO) {
+                pnz.validirajDodajanjePostajeDTO((DodajanjePostajeDTO) o);
+            }
         }
         return context.proceed();
     }

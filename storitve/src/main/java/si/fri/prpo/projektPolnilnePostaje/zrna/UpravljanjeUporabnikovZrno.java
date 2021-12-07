@@ -3,13 +3,12 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
-import si.fri.prpo.projektPolnilnePostaje.prestrezniki.ValidirajUporabnike;
+import si.fri.prpo.projektPolnilnePostaje.prestrezniki.ValidirajDtoje;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,7 +34,7 @@ public class UpravljanjeUporabnikovZrno {
         //zapiranje virov
     }
 
-    @ValidirajUporabnike
+    @ValidirajDtoje
     public Uporabnik dodajUporabnika(DodajanjeUporabnikaDTO dto) {
         Uporabnik u = new Uporabnik();
 

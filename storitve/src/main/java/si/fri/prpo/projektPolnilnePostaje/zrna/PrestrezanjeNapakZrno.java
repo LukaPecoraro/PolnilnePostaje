@@ -1,7 +1,10 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
+import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavenUporabnikDtoIzjema;
+import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavnaPostajaDtoIzjema;
 
 import javax.enterprise.context.RequestScoped;
 import java.util.logging.Logger;
@@ -11,10 +14,20 @@ public class PrestrezanjeNapakZrno {
     private Logger log = Logger.getLogger(PrestrezanjeNapakZrno.class.getName());
 
     public void validirajDodajanjeUporabnikaDTO(DodajanjeUporabnikaDTO uporabnik) {
-        if (uporabnik.getUporabniskoIme() == null || uporabnik.getUporabniskoIme().isEmpty()
-                || uporabnik.getEmail() == null || uporabnik.getEmail().isEmpty()) {
-            String msg = "Podani podatki so pomanjkljivi!";
+        if (uporabnik.getUporabniskoIme() == null || uporabnik.getUporabniskoIme().isEmpty() ||
+                uporabnik.getEmail() == null || uporabnik.getEmail().isEmpty() ||
+                uporabnik.getGeslo() == null || uporabnik.getGeslo().isEmpty()) {
+            String msg = "Manjka uporabniško ime, e-poštni naslov in/ali geslo!";
             throw new NeveljavenUporabnikDtoIzjema(msg);
+        }
+    }
+
+    public void validirajDodajanjePostajeDTO(DodajanjePostajeDTO postaja) {
+        if (postaja.getLokacija() == null || postaja.getLokacija().isEmpty() ||
+                postaja.getIdLastnik() == null || postaja.getUraOdprtja() == null ||
+                postaja.getUraZaprtja() == null) {
+            String msg = "Manjka lokacija, lastnik in/ali uri obratovanja.";
+            throw new NeveljavnaPostajaDtoIzjema(msg);
         }
     }
 }
