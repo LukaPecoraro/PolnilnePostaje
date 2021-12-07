@@ -1,8 +1,17 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeRezervacijeDTO;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 import si.fri.prpo.projektPolnilnePostaje.zrna.RezervacijeZrno;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeRezervacijZrno;
 
@@ -28,6 +37,14 @@ public class RezervacijeViri {
     private UpravljanjeRezervacijZrno rezervacijeZrno;
 
     @GET
+    @Operation(summary = "Seznam rezervacij",
+            description = "Vrne seznam rezervacij")
+    @APIResponses({
+            @APIResponse(description = "Seznam rezervacij",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Rezervacija.class, type = SchemaType.ARRAY)),
+                    headers = @Header(name="X-Total-Count", description = "Število vrnjenih rezervacij"))
+    })
     public Response getRezervacije() {
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
         List<Rezervacija> rezervacije = rezervacijeZrno.vrniRezervacije(query);
@@ -38,6 +55,14 @@ public class RezervacijeViri {
     }
 
     @GET
+    @Operation(summary = "Dolocena rezervacija",
+            description = "Vrni izbrano rezervacijo preko njenega identifikatorja")
+    @APIResponses({
+            @APIResponse(description = "Rezervacija",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Rezervacija.class))
+            )
+    })
     @Path("{id}")
     public Response getRezervacija(@PathParam("id") Integer id) {
         Rezervacija r = rezervacijeZrno.vrniRezervacijo(id);
@@ -47,12 +72,28 @@ public class RezervacijeViri {
     }
 
     @POST
+    @Operation(summary = "Nova rezervacija",
+            description = "Dodaj novo rezervacija")
+    @APIResponses({
+            @APIResponse(responseCode = "201",
+                    description = "Rezervacija uspešno dodana"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     public Response addRezervacija(DodajanjeRezervacijeDTO r) {
         rezervacijeZrno.dodajRezervacijo(r);
         return Response.noContent().build();
     }
 
     @DELETE
+    @Operation(summary = "Izbris rezervacije",
+            description = "Izbriši izbrano rezervacijo")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "Rezervacija uspešno izbrisana"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     @Path("{id}")
     public Response deleteRezervacija(@PathParam("id") Integer id) {
         boolean uspeh = rezervacijeZrno.izbrisiRezervacijo(id);

@@ -1,11 +1,19 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 import si.fri.prpo.projektPolnilnePostaje.zrna.OceneZrno;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjePolnilnicZrno;
 
@@ -32,6 +40,14 @@ public class PostajeViri {
     private UpravljanjePolnilnicZrno upz;
 
     @GET
+    @Operation(summary = "Seznam postaj",
+            description = "Vrne seznam postaj")
+    @APIResponses({
+            @APIResponse(description = "Seznam postaj",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = PolnilnaPostaja.class, type = SchemaType.ARRAY)),
+                    headers = @Header(name="X-Total-Count", description = "Število vrnjenih polnilnih postaj"))
+    })
     public Response getPolnilnaPostaje(){
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
         List<PolnilnaPostaja> postaje = upz.vrniPostaje(query);
@@ -42,6 +58,14 @@ public class PostajeViri {
     }
 
     @GET
+    @Operation(summary = "Dolocena postajo",
+            description = "Vrni izbrano postajo preko njenega identifikatorja")
+    @APIResponses({
+            @APIResponse(description = "Postaja",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = PolnilnaPostaja.class))
+            )
+    })
     @Path("{idPostaje}")
     public Response getPolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje) {
         PolnilnaPostaja postaja = upz.vrniPostajoPoId(idPostaje);
@@ -51,6 +75,14 @@ public class PostajeViri {
     }
 
     @POST
+    @Operation(summary = "Nova postaja",
+            description = "Dodaj novo postajo")
+    @APIResponses({
+            @APIResponse(responseCode = "201",
+                    description = "Postaja uspešno dodana"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     public Response addPolnilnaPostaja(DodajanjePostajeDTO postaja) {
         PolnilnaPostaja ps = upz.dodajPostajo(postaja);
         if (ps != null) {
@@ -60,6 +92,14 @@ public class PostajeViri {
     }
 
     @PUT
+    @Operation(summary = "Posodobitev postaje",
+            description = "Posodobi izbrano postajo")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "Postaja uspešno posodobljena"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     @Path("{idPostaje}")
     public Response changePolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje, UrejanjePostajeDTO dto) {
         PolnilnaPostaja ps = upz.posodobiPostajo(dto, idPostaje);
@@ -70,6 +110,14 @@ public class PostajeViri {
     }
 
     @DELETE
+    @Operation(summary = "Izbris postaje",
+            description = "Izbriši izbrano postajo")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "Postaja uspešno izbrisana"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     @Path("{idPostaje}")
     public Response deletePolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje) {
         boolean uspeh = upz.izbrisiPostajo(idPostaje);
@@ -80,20 +128,37 @@ public class PostajeViri {
     }
 
     @GET
+    @Operation(summary = "Seznam ocen za postajo",
+            description = "Vrne seznam ocen za postajo")
+    @APIResponses({
+            @APIResponse(description = "Seznam ocen",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Ocena.class, type = SchemaType.ARRAY)),
+                    headers = @Header(name="X-Total-Count", description = "Število vrnjenih ocen"))
+    })
     @Path("{idPostaje}/ocene")
     public Response getOcenePostaje(@PathParam("idPostaje") Integer idPostaje) {
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
-        List<Ocena> ocene = upz.vrniOcene(idPostaje, query);
-        if (ocene != null) {
-            return Response.ok(ocene)
-                    .build();
-        }
-        return Response.status(Response.Status.NOT_FOUND).build();
+
+        Long oceneCount = upz.vrniSteviloOcenZaPostajo(query);;
+
+        return Response
+                .ok(upz.vrniOcene(idPostaje, query))
+                .header("X-Total-Count", oceneCount)
+                .build();
     }
 
     @GET
+    @Operation(summary = "Seznam rezervacij za postajo",
+            description = "Vrne seznam rezervacij za postajo")
+    @APIResponses({
+            @APIResponse(description = "Seznam rezervacij",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Rezervacija.class, type = SchemaType.ARRAY)))
+    })
     @Path("{idPostaje}/rezervacije")
     public Response getRezervacijePostaje(@PathParam("idPostaje") Integer idPostaje) {
+
         List<Rezervacija> rezervacije = upz.vrniRezervacije(idPostaje);
         if (rezervacije != null) {
             return Response.status(Response.Status.OK).entity(rezervacije).build();

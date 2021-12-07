@@ -1,7 +1,15 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.headers.Header;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeOceneDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 import si.fri.prpo.projektPolnilnePostaje.zrna.OceneZrno;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeOcenZrno;
 
@@ -30,6 +38,14 @@ public class OceneViri {
 
 
     @GET
+    @Operation(summary = "Dolocena ocena",
+            description = "Vrni izbrano oceno preko njenega identifikatorja")
+    @APIResponses({
+            @APIResponse(description = "Ocena",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = Ocena.class))
+            )
+    })
     @Path("{id}")
     public Response getOcene(@PathParam("id") Integer id) {
         Ocena ocena = oceneZrno.getOcena(id);
@@ -39,6 +55,14 @@ public class OceneViri {
     }
 
     @POST
+    @Operation(summary = "Nova ocena",
+            description = "Dodaj novo oceno")
+    @APIResponses({
+            @APIResponse(responseCode = "201",
+                    description = "Ocena uspešno dodana"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     @Path("")
     public Response postOcena(UrejanjeOceneDTO ocenaDTO) {
         Ocena ocena = upravljanjeOcenZrno.dodajOceno(ocenaDTO);
@@ -49,6 +73,14 @@ public class OceneViri {
     }
 
     @PUT
+    @Operation(summary = "Posodobitev ocene",
+            description = "Posodobi izbrano oceno")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "Ocena uspešno posodobljena"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     @Path("{id}")
     public Response putOcena(@PathParam("id") Integer id, UrejanjeOceneDTO ocenaDTO) {
         Ocena ocena = upravljanjeOcenZrno.posodobiOceno(ocenaDTO, id);
@@ -59,6 +91,14 @@ public class OceneViri {
     }
 
     @DELETE
+    @Operation(summary = "Izbris ocene",
+            description = "Izbriši izbrano oceno")
+    @APIResponses({
+            @APIResponse(responseCode = "200",
+                    description = "Ocena uspešno izbrisana"),
+            @APIResponse(responseCode = "405",
+                    description = "Validacijska napaka")
+    })
     @Path("{id}")
     public Response deleteOcena(@PathParam("id") Integer id) {
         boolean uspeh = upravljanjeOcenZrno.izbrisiOceno(id);

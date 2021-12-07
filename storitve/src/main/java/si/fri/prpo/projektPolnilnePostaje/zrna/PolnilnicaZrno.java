@@ -53,7 +53,7 @@ public class PolnilnicaZrno {
     }
 
     public Long getPostajeCount(QueryParameters query) {
-        return JPAUtils.queryEntitiesCount(em, Uporabnik.class, query);
+        return JPAUtils.queryEntitiesCount(em, PolnilnaPostaja.class, query);
     }
 
     // se criteria API

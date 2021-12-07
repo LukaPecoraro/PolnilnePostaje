@@ -2,8 +2,10 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -41,11 +43,15 @@ public class OceneZrno {
     @PersistenceContext(unitName = "polnilne-postaje-jpa")
     private EntityManager em;
 
-    //Vrne vse ocene
+    //Vrne vse ocene za postajo
     public List<Ocena> getOceneZaPostajo(PolnilnaPostaja idPostaje, QueryParameters query) {
         return this.em.createNamedQuery("Ocena.getByPostaja", Ocena.class)
                 .setParameter("polnilnaPostaja", idPostaje)
                 .getResultList();
+    }
+
+    public Long getOceneZaPostajoCount(QueryParameters query){
+        return JPAUtils.queryEntitiesCount(em, Ocena.class, query);
     }
 
     //vrne eno oceno

@@ -115,6 +115,11 @@ public class UpravljanjePolnilnicZrno {
         return null;
     }
 
+    public Long vrniSteviloOcenZaPostajo(QueryParameters query) {
+        return oz.getOceneZaPostajoCount(query);
+    }
+
+
     public List<Rezervacija> vrniRezervacije(int idPostaje) {
         PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
         if (postaja != null) {
@@ -122,6 +127,8 @@ public class UpravljanjePolnilnicZrno {
         }
         return null;
     }
+
+
 
     public List<PolnilnaPostaja> vrniPostaje(QueryParameters query) {
         return pz.getPostaje(query);
