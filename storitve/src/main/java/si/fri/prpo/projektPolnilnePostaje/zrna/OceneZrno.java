@@ -1,6 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 
@@ -41,7 +42,7 @@ public class OceneZrno {
     private EntityManager em;
 
     //Vrne vse ocene
-    public List<Ocena> getOceneZaPostajo(PolnilnaPostaja idPostaje) {
+    public List<Ocena> getOceneZaPostajo(PolnilnaPostaja idPostaje, QueryParameters query) {
         return this.em.createNamedQuery("Ocena.getByPostaja", Ocena.class)
                 .setParameter("polnilnaPostaja", idPostaje)
                 .getResultList();

@@ -1,5 +1,6 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.PoizvedbaPoPostajiDTO;
@@ -13,6 +14,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.management.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
@@ -75,8 +77,8 @@ public class UpravljanjeRezervacijZrno {
         return rz.createRezervacija(novaRezervacija);
     }
 
-    public List<Rezervacija> vrniRezervacije() {
-        return rz.getRezervacije();
+    public List<Rezervacija> vrniRezervacije(QueryParameters query) {
+        return rz.getRezervacije(query);
     }
 
     public Rezervacija vrniRezervacijo(int idRezervacija){
@@ -103,6 +105,10 @@ public class UpravljanjeRezervacijZrno {
     public UUID izpisiUUID() {
         log.info("Zrno je obsega @RequestScoped in ima UUID: " + uid);
         return uid;
+    }
+
+    public Long vrniSteviloRezervacij(QueryParameters query) {
+        return rz.getRezervacijeCount(query);
     }
 }
 

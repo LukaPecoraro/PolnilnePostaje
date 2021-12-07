@@ -1,6 +1,8 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 
@@ -9,12 +11,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -42,8 +39,8 @@ public class RezervacijeZrno {
     private EntityManager em;
 
     //Vrne vse ocene
-    public List<Rezervacija> getRezervacije() {
-        return this.em.createNamedQuery("Rezervacija.getAll", Rezervacija.class).getResultList();
+    public List<Rezervacija> getRezervacije(QueryParameters query) {
+        return JPAUtils.queryEntities(em, Rezervacija.class, query);
     }
 
     public List<Rezervacija> getRezervacijeByPostaja(PolnilnaPostaja ps) {
@@ -99,5 +96,9 @@ public class RezervacijeZrno {
             return true;
         }
         return false;
+    }
+
+    public Long getRezervacijeCount(QueryParameters query) {
+        return JPAUtils.queryEntitiesCount(em, Rezervacija.class, query);
     }
 }

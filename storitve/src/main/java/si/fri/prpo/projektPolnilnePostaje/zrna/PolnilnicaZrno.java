@@ -1,5 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
@@ -13,7 +15,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -40,14 +41,19 @@ public class PolnilnicaZrno {
     private EntityManager em;
 
     //Vrne vse postaje
-    public List<PolnilnaPostaja> getPostaje() {
-        return this.em.createNamedQuery("PolnilnaPostaja.getAll", PolnilnaPostaja.class).getResultList();
+    public List<PolnilnaPostaja> getPostaje(QueryParameters query) {
+        List<PolnilnaPostaja> postaje = JPAUtils.queryEntities(em, PolnilnaPostaja.class, query);
+        return postaje;
     }
 
     //vrne eno postajo
     public PolnilnaPostaja getPostajaById(int idPostaja){
         PolnilnaPostaja postaja = em.find(PolnilnaPostaja.class, idPostaja);
         return postaja;
+    }
+
+    public Long getPostajeCount(QueryParameters query) {
+        return JPAUtils.queryEntitiesCount(em, Uporabnik.class, query);
     }
 
     // se criteria API

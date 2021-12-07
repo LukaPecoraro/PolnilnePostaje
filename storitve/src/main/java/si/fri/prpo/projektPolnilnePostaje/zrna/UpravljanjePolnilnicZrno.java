@@ -1,5 +1,6 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
@@ -106,10 +107,10 @@ public class UpravljanjePolnilnicZrno {
         return uspeh;
     }
 
-    public List<Ocena> vrniOcene(int idPostaje) {
+    public List<Ocena> vrniOcene(int idPostaje, QueryParameters query) {
         PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
         if (postaja != null) {
-            return oz.getOceneZaPostajo(postaja);
+            return oz.getOceneZaPostajo(postaja, query);
         }
         return null;
     }
@@ -122,8 +123,8 @@ public class UpravljanjePolnilnicZrno {
         return null;
     }
 
-    public List<PolnilnaPostaja> vrniPostaje() {
-        return pz.getPostaje();
+    public List<PolnilnaPostaja> vrniPostaje(QueryParameters query) {
+        return pz.getPostaje(query);
     }
 
     // NOTE: Lahko vrne null!!
@@ -143,5 +144,9 @@ public class UpravljanjePolnilnicZrno {
     public UUID izpisiUUID() {
         log.info("Zrno je obsega @ApplicationScope in ima UUID: " + uid);
         return uid;
+    }
+
+    public Long vrniSteviloPostaj(QueryParameters query) {
+        return pz.getPostajeCount(query);
     }
 }

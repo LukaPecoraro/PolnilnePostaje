@@ -1,5 +1,6 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.zrna.RezervacijeZrno;
@@ -28,8 +29,12 @@ public class RezervacijeViri {
 
     @GET
     public Response getRezervacije() {
-        List<Rezervacija> rezervacije = rezervacijeZrno.vrniRezervacije();
-        return Response.status(Response.Status.OK).entity(rezervacije).build();
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        List<Rezervacija> rezervacije = rezervacijeZrno.vrniRezervacije(query);
+        Long steviloRezervacij = rezervacijeZrno.vrniSteviloRezervacij(query);
+        return Response.ok(rezervacije)
+                .header("X-Total-Count", steviloRezervacij)
+                .build();
     }
 
     @GET

@@ -1,5 +1,6 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
+import com.kumuluz.ee.rest.beans.QueryParameters;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
@@ -32,8 +33,12 @@ public class PostajeViri {
 
     @GET
     public Response getPolnilnaPostaje(){
-        List<PolnilnaPostaja> postaje = upz.vrniPostaje();
-        return Response.status(Response.Status.OK).entity(postaje).build();
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        List<PolnilnaPostaja> postaje = upz.vrniPostaje(query);
+        Long stPostaj = upz.vrniSteviloPostaj(query);
+        return Response.ok(postaje)
+                .header("X-Total-Count", stPostaj)
+                .build();
     }
 
     @GET
@@ -77,9 +82,11 @@ public class PostajeViri {
     @GET
     @Path("{idPostaje}/ocene")
     public Response getOcenePostaje(@PathParam("idPostaje") Integer idPostaje) {
-        List<Ocena> ocene = upz.vrniOcene(idPostaje);
+        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        List<Ocena> ocene = upz.vrniOcene(idPostaje, query);
         if (ocene != null) {
-            return Response.status(Response.Status.OK).entity(ocene).build();
+            return Response.ok(ocene)
+                    .build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
