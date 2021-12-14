@@ -67,8 +67,7 @@ public class UpravljanjePolnilnicZrno {
         ps.setCenaPolnjenja(dto.getCenaPolnjenja());
         ps.setHitrostPolnjenja(dto.getHitrostPolnjenja());
         ps.setTipPrikljucka(dto.getTipPrikljucka());
-
-        // TODO: Dodaj lastnika!!!
+        ps.setLastnik(uporabnik);
 
         return pz.createPostaja(ps);
     }
@@ -106,19 +105,6 @@ public class UpravljanjePolnilnicZrno {
         }
         return uspeh;
     }
-
-    public List<Ocena> vrniOcene(int idPostaje, QueryParameters query) {
-        PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
-        if (postaja != null) {
-            return oz.getOceneZaPostajo(postaja, query);
-        }
-        return null;
-    }
-
-    public Long vrniSteviloOcenZaPostajo(QueryParameters query) {
-        return oz.getOceneZaPostajoCount(query);
-    }
-
 
     public List<Rezervacija> vrniRezervacije(int idPostaje) {
         PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);

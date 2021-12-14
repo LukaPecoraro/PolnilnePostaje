@@ -1,10 +1,16 @@
 package si.fri.prpo.projektPolnilnePostaje.dtoji;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class DodajanjePostajeDTO {
     private Integer idLastnik;
     private String lokacija;
+
     private Date uraOdprtja;
     private Date uraZaprtja;
     private Float cenaPolnjenja;

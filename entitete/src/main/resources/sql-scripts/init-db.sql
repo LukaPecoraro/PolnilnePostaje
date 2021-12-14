@@ -6,3 +6,6 @@ INSERT INTO uporabniki (uporabniskoIme, email, kodiranoGeslo, tip) VALUES ('Mart
 
 INSERT INTO polnilnePostaje (lokacija, uraOdprtja, uraZaprtja, cenaPolnjenja, tipPrikljucka, hitrostPolnjenja) VALUES ('Bogu za hrbtom 1, Prekljev Laz', '8:00', '22:00', '20.0', '1', '100');
 INSERT INTO polnilnePostaje (lokacija, uraOdprtja, uraZaprtja, cenaPolnjenja, tipPrikljucka, hitrostPolnjenja) VALUES ('Sredi vsega 12, Ljubljana', '9:00', '23:00', '10.0', '2', '50');
+
+INSERT INTO ocene (komentar, ocena, idPostaja, idUporabnik) VALUES ('Dobro je!', '5', '1', '1')
+INSERT INTO ocene (komentar, ocena, idPostaja, idUporabnik) VALUES ('Meh.', '2', '2', '3')

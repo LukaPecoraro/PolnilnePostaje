@@ -48,7 +48,7 @@ public class PolnilnaPostaja {
 
     @ManyToOne
     @JoinColumn(name = "idUporabnik")
-    private LastnikPostaje lastnik;
+    private Uporabnik lastnik;
 
     public Integer getIdPostaja() {
         return idPostaja;
@@ -110,7 +110,7 @@ public class PolnilnaPostaja {
         return ocene;
     }
 
-    public LastnikPostaje getLastnik() {
+    public Uporabnik getLastnik() {
         return lastnik;
     }
 
@@ -124,5 +124,9 @@ public class PolnilnaPostaja {
 
     public void setRezervacije(Set<Rezervacija> rezervacije) {
         this.rezervacije = rezervacije;
+    }
+
+    public void setLastnik(Uporabnik uporabnik) {
+        this.lastnik = uporabnik;
     }
 }

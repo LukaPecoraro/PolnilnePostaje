@@ -26,6 +26,10 @@ public class PrestrezanjeNapakZrno {
         if (postaja.getLokacija() == null || postaja.getLokacija().isEmpty() ||
                 postaja.getIdLastnik() == null || postaja.getUraOdprtja() == null ||
                 postaja.getUraZaprtja() == null) {
+            log.info(postaja.getLokacija());
+            log.info(postaja.getIdLastnik().toString());
+            log.info(postaja.getUraOdprtja().toString());
+            log.info(postaja.getUraZaprtja().toString());
             String msg = "Manjka lokacija, lastnik in/ali uri obratovanja.";
             throw new NeveljavnaPostajaDtoIzjema(msg);
         }

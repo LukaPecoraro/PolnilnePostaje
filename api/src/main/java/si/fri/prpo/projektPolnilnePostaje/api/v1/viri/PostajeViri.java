@@ -127,7 +127,7 @@ public class PostajeViri {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    @GET
+    /*@GET
     @Operation(summary = "Seznam ocen za postajo",
             description = "Vrne seznam ocen za postajo")
     @APIResponses({
@@ -146,7 +146,7 @@ public class PostajeViri {
                 .ok(upz.vrniOcene(idPostaje, query))
                 .header("X-Total-Count", oceneCount)
                 .build();
-    }
+    }*/
 
     @GET
     @Operation(summary = "Seznam rezervacij za postajo",
