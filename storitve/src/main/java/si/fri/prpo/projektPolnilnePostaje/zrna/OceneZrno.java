@@ -3,6 +3,7 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazOceneDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
@@ -19,6 +20,8 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 public class OceneZrno {
@@ -44,21 +47,20 @@ public class OceneZrno {
     private EntityManager em;
 
     //Vrne vse ocene za postajo
-    public List<Ocena> getOceneZaPostajo(PolnilnaPostaja idPostaje, QueryParameters query) {
-        return this.em.createNamedQuery("Ocena.getByPostaja", Ocena.class)
-                .setParameter("polnilnaPostaja", idPostaje)
-                .getResultList();
+    public List<PrikazOceneDTO> getOcene(QueryParameters query) {
+        return JPAUtils.queryEntities(em, Ocena.class, query)
+                .stream().map(PrikazOceneDTO::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Long getOceneZaPostajoCount(QueryParameters query){
+    public Long getOceneCount(QueryParameters query){
         return JPAUtils.queryEntitiesCount(em, Ocena.class, query);
     }
 
     //vrne eno oceno
     public Ocena getOcena(int idOcena){
-        Ocena ocena = em.find(Ocena.class, idOcena);
-
-        return ocena;
+        log.info("Dela!");
+        return em.find(Ocena.class, idOcena);
     }
 
 
