@@ -8,4 +8,6 @@ kumuluzee:
       connection-url: jdbc:postgresql://localhost:5432/postajeDB
       username: postgres
       password: postgres
-
+integrations:
+  upravljanjeRezervacij:
+    base-url: http://localhost:8082/v1
