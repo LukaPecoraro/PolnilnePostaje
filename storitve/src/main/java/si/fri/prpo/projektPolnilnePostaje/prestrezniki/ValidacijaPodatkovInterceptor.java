@@ -1,7 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.prestrezniki;
 
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeUporabnikaDTO;
 import si.fri.prpo.projektPolnilnePostaje.zrna.PrestrezanjeNapakZrno;
 
 import javax.inject.Inject;
@@ -23,8 +23,8 @@ public class ValidacijaPodatkovInterceptor {
     public Object validacijaUporabnikov(InvocationContext context) throws Exception {
         if (context.getParameters().length == 1) {
             Object o = context.getParameters()[0];
-            if (o instanceof DodajanjeUporabnikaDTO) {
-                pnz.validirajDodajanjeUporabnikaDTO((DodajanjeUporabnikaDTO) o);
+            if (o instanceof UrejanjeUporabnikaDTO) {
+                pnz.validirajDodajanjeUporabnikaDTO((UrejanjeUporabnikaDTO) o);
             }
             if (o instanceof UrejanjePostajeDTO) {
                 pnz.validirajDodajanjePostajeDTO((UrejanjePostajeDTO) o);

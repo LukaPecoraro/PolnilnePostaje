@@ -1,7 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeUporabnikaDTO;
 import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavenUporabnikDtoIzjema;
 import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavnaPostajaDtoIzjema;
 
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class PrestrezanjeNapakZrno {
     private Logger log = Logger.getLogger(PrestrezanjeNapakZrno.class.getName());
 
-    public void validirajDodajanjeUporabnikaDTO(DodajanjeUporabnikaDTO uporabnik) {
+    public void validirajDodajanjeUporabnikaDTO(UrejanjeUporabnikaDTO uporabnik) {
         if (uporabnik.getUporabniskoIme() == null || uporabnik.getUporabniskoIme().isEmpty() ||
                 uporabnik.getEmail() == null || uporabnik.getEmail().isEmpty() ||
                 uporabnik.getGeslo() == null || uporabnik.getGeslo().isEmpty()) {

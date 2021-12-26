@@ -1,6 +1,6 @@
 package si.fri.prpo.projektPolnilnePostaje.dtoji;
 
-public class DodajanjeUporabnikaDTO {
+public class UrejanjeUporabnikaDTO {
     private String uporabniskoIme;
     private String email;
     private String geslo;
