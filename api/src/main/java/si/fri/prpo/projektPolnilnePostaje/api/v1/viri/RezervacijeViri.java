@@ -8,11 +8,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeRezervacijeDTO;
-import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazRezervacijeDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
-import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
-import si.fri.prpo.projektPolnilnePostaje.zrna.RezervacijeZrno;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeRezervacijZrno;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -34,7 +32,7 @@ public class RezervacijeViri {
     protected UriInfo uriInfo;
 
     @Inject
-    private UpravljanjeRezervacijZrno rezervacijeZrno;
+    private UpravljanjeRezervacijZrno rz;
 
     @GET
     @Operation(summary = "Seznam rezervacij",
@@ -47,8 +45,8 @@ public class RezervacijeViri {
     })
     public Response getRezervacije() {
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
-        List<Rezervacija> rezervacije = rezervacijeZrno.vrniRezervacije(query);
-        Long steviloRezervacij = rezervacijeZrno.vrniSteviloRezervacij(query);
+        List<PrikazRezervacijeDTO> rezervacije = rz.vrniRezervacije(query);
+        Long steviloRezervacij = rz.vrniSteviloRezervacij(query);
         return Response.ok(rezervacije)
                 .header("X-Total-Count", steviloRezervacij)
                 .build();
@@ -65,7 +63,7 @@ public class RezervacijeViri {
     })
     @Path("{id}")
     public Response getRezervacija(@PathParam("id") Integer id) {
-        Rezervacija r = rezervacijeZrno.vrniRezervacijo(id);
+        PrikazRezervacijeDTO r = rz.vrniRezervacijo(id);
         return r != null
                 ? Response.ok(r).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
@@ -80,9 +78,11 @@ public class RezervacijeViri {
             @APIResponse(responseCode = "405",
                     description = "Validacijska napaka")
     })
-    public Response addRezervacija(DodajanjeRezervacijeDTO r) {
-        rezervacijeZrno.dodajRezervacijo(r);
-        return Response.noContent().build();
+    public Response addRezervacija(UrejanjeRezervacijeDTO r) {
+        PrikazRezervacijeDTO rezervacija = rz.dodajRezervacijo(r);
+        return rezervacija != null
+                ? Response.status(Response.Status.CREATED).entity(rezervacija).build()
+                : Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @DELETE
@@ -96,7 +96,7 @@ public class RezervacijeViri {
     })
     @Path("{id}")
     public Response deleteRezervacija(@PathParam("id") Integer id) {
-        boolean uspeh = rezervacijeZrno.izbrisiRezervacijo(id);
+        boolean uspeh = rz.izbrisiRezervacijo(id);
         if (uspeh) {
             return Response.status(Response.Status.OK).build();
         }

@@ -3,6 +3,7 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class RezervacijeZrno {
@@ -65,6 +67,7 @@ public class RezervacijeZrno {
                     .getResultList();
             if (seznamIstoleznih.isEmpty()) {
                 em.persist(rezervacija);
+                return rezervacija;
             }
         }
         return null;

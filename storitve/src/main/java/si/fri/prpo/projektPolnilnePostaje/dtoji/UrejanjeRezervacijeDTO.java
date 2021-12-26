@@ -2,7 +2,7 @@ package si.fri.prpo.projektPolnilnePostaje.dtoji;
 
 import java.util.Date;
 
-public class DodajanjeRezervacijeDTO {
+public class UrejanjeRezervacijeDTO {
     private Integer idPostaja;
     private Integer idUporabnik;
     private Date datumRezervacije;

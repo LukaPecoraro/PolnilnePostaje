@@ -1,7 +1,8 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeRezervacijeDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazRezervacijeDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
@@ -14,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @RequestScoped
 public class UpravljanjeRezervacijZrno {
@@ -43,47 +45,51 @@ public class UpravljanjeRezervacijZrno {
         //zapiranje virov
     }
 
-    // NOTE: Lahko vrne null!!
     @Transactional
-    public Rezervacija dodajRezervacijo(DodajanjeRezervacijeDTO dto) {
+    public PrikazRezervacijeDTO dodajRezervacijo(UrejanjeRezervacijeDTO dto) {
         Uporabnik uporabnik = uz.getUporabnikById(dto.getIdUporabnik());
         if (uporabnik == null) {
-            log.info("CREATE Rezervacija: Uporabnik ne obstaja.");
+            log.info("Uporabnik ne obstaja.");
             return null;
         }
 
         PolnilnaPostaja postaja = pz.getPostajaById(dto.getIdPostaja());
         if (postaja == null){
-            log.info("CREATE Rezervacija: Postaja ne obstaja.");
+            log.info("Postaja ne obstaja.");
             return null;
         }
 
         Rezervacija novaRezervacija = new Rezervacija();
-        //dodas v obe smeri da je pravilna relacija
         novaRezervacija.setUporabnik(uporabnik);
-        uporabnik.getRezervacije().add(novaRezervacija);
         novaRezervacija.setPolnilnaPostaja(postaja);
-        postaja.getRezervacije().add(novaRezervacija);
-
         novaRezervacija.setDatumRezervacije(dto.getDatumRezervacije());
         novaRezervacija.setUraZacetka(dto.getUraZacetka());
         novaRezervacija.setUraKonca(dto.getUraKonca());
 
-        return rz.createRezervacija(novaRezervacija);
+        Rezervacija r = rz.createRezervacija(novaRezervacija);
+        if (r != null) {
+            uporabnik.getRezervacije().add(r);
+            postaja.getRezervacije().add(r);
+            return PrikazRezervacijeDTO.toDto(r);
+        }
+        return null;
     }
 
-    public List<Rezervacija> vrniRezervacije(QueryParameters query) {
-        return rz.getRezervacije(query);
+    public List<PrikazRezervacijeDTO> vrniRezervacije(QueryParameters query) {
+        return rz.getRezervacije(query).stream()
+                .map(PrikazRezervacijeDTO::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Rezervacija vrniRezervacijo(int idRezervacija){
+    public PrikazRezervacijeDTO vrniRezervacijo(int idRezervacija){
         Rezervacija rezervacija = rz.getRezervacija(idRezervacija);
         if (rezervacija != null) {
             log.info("Rezervacija " + rezervacija.getIdRezervacija() + " najdena.");
+            return PrikazRezervacijeDTO.toDto(rezervacija);
         } else {
             log.info("Rezervacija " + idRezervacija + " ni bila najdena.");
         }
-        return rezervacija;
+        return null;
     }
 
     @Transactional
