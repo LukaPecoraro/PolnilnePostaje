@@ -8,13 +8,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
-import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazPostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
-import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
-import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
-import si.fri.prpo.projektPolnilnePostaje.zrna.OceneZrno;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjePolnilnicZrno;
 
 
@@ -31,7 +27,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
-public class PostajeViri {
+public class PolnilniceViri {
 
     @Context
     protected UriInfo uriInfo;
@@ -45,12 +41,12 @@ public class PostajeViri {
     @APIResponses({
             @APIResponse(description = "Seznam postaj",
                     responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = PolnilnaPostaja.class, type = SchemaType.ARRAY)),
+                    content = @Content(schema = @Schema(implementation = PrikazPostajeDTO.class, type = SchemaType.ARRAY)),
                     headers = @Header(name="X-Total-Count", description = "Število vrnjenih polnilnih postaj"))
     })
-    public Response getPolnilnaPostaje(){
+    public Response getPolnilnePostaje(){
         QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
-        List<PolnilnaPostaja> postaje = upz.vrniPostaje(query);
+        List<PrikazPostajeDTO> postaje = upz.vrniPostaje(query);
         Long stPostaj = upz.vrniSteviloPostaj(query);
         return Response.ok(postaje)
                 .header("X-Total-Count", stPostaj)
@@ -68,7 +64,7 @@ public class PostajeViri {
     })
     @Path("{idPostaje}")
     public Response getPolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje) {
-        PolnilnaPostaja postaja = upz.vrniPostajoPoId(idPostaje);
+        PrikazPostajeDTO postaja = upz.vrniPostajo(idPostaje);
         return postaja != null
                 ? Response.ok(postaja).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
@@ -83,10 +79,10 @@ public class PostajeViri {
             @APIResponse(responseCode = "405",
                     description = "Validacijska napaka")
     })
-    public Response addPolnilnaPostaja(DodajanjePostajeDTO postaja) {
-        PolnilnaPostaja ps = upz.dodajPostajo(postaja);
+    public Response addPolnilnaPostaja(UrejanjePostajeDTO postaja) {
+        PrikazPostajeDTO ps = upz.dodajPostajo(postaja);
         if (ps != null) {
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(ps).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
@@ -102,9 +98,9 @@ public class PostajeViri {
     })
     @Path("{idPostaje}")
     public Response changePolnilnaPostaja(@PathParam("idPostaje") Integer idPostaje, UrejanjePostajeDTO dto) {
-        PolnilnaPostaja ps = upz.posodobiPostajo(dto, idPostaje);
+        PrikazPostajeDTO ps = upz.posodobiPostajo(dto, idPostaje);
         if (ps != null) {
-            return Response.status(Response.Status.OK).build();
+            return Response.status(Response.Status.OK).entity(ps).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
@@ -148,7 +144,7 @@ public class PostajeViri {
                 .build();
     }*/
 
-    @GET
+    /*@GET
     @Operation(summary = "Seznam rezervacij za postajo",
             description = "Vrne seznam rezervacij za postajo")
     @APIResponses({
@@ -164,5 +160,5 @@ public class PostajeViri {
             return Response.status(Response.Status.OK).entity(rezervacije).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
-    }
+    }*/
 }

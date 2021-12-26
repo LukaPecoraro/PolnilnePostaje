@@ -59,7 +59,6 @@ public class OceneZrno {
 
     //vrne eno oceno
     public Ocena getOcena(int idOcena){
-        log.info("Dela!");
         return em.find(Ocena.class, idOcena);
     }
 
@@ -89,10 +88,10 @@ public class OceneZrno {
     public Ocena updateOcena(int idOcena, Ocena ocena){
         Ocena instanca = getOcena(idOcena);
         if (instanca != null) {
-            instanca.setOcena(ocena.getOcena());
-            instanca.setKomentar(ocena.getKomentar());
-            instanca.setUporabnik(ocena.getUporabnik());
-            instanca.setPolnilnaPostaja(ocena.getPolnilnaPostaja());
+            if (ocena.getOcena() != null) instanca.setOcena(ocena.getOcena());
+            if (ocena.getKomentar() != null) instanca.setKomentar(ocena.getKomentar());
+            if (ocena.getUporabnik() != null) instanca.setUporabnik(ocena.getUporabnik());
+            if (ocena.getPolnilnaPostaja() != null) instanca.setPolnilnaPostaja(ocena.getPolnilnaPostaja());
             em.merge(instanca);
         }
         return instanca;

@@ -1,8 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjeUporabnikaDTO;
 import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavenUporabnikDtoIzjema;
 import si.fri.prpo.projektPolnilnePostaje.izjeme.NeveljavnaPostajaDtoIzjema;
 
@@ -22,7 +21,7 @@ public class PrestrezanjeNapakZrno {
         }
     }
 
-    public void validirajDodajanjePostajeDTO(DodajanjePostajeDTO postaja) {
+    public void validirajDodajanjePostajeDTO(UrejanjePostajeDTO postaja) {
         if (postaja.getLokacija() == null || postaja.getLokacija().isEmpty() ||
                 postaja.getIdLastnik() == null || postaja.getUraOdprtja() == null ||
                 postaja.getUraZaprtja() == null) {

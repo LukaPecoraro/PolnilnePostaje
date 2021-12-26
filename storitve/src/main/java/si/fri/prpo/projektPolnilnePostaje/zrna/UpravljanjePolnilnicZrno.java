@@ -1,9 +1,8 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
-import si.fri.prpo.projektPolnilnePostaje.dtoji.DodajanjePostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjePostajeDTO;
-import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazPostajeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
@@ -23,9 +22,6 @@ public class UpravljanjePolnilnicZrno {
 
     @Inject
     private PolnilnicaZrno pz;
-
-    @Inject
-    private OceneZrno oz;
 
     @Inject
     private RezervacijeZrno rz;
@@ -50,13 +46,32 @@ public class UpravljanjePolnilnicZrno {
         //zapiranje virov
     }
 
-    // NOTE: Lahko vrne null!!
     @Transactional
-    @ValidirajDtoje
-    public PolnilnaPostaja dodajPostajo(DodajanjePostajeDTO dto) {
+    public PrikazPostajeDTO dodajPostajo(UrejanjePostajeDTO dto) {
+        if (dto.getLokacija() == null) {
+            log.info("Manjka lokacija.");
+            return null;
+        }
+        if (dto.getCenaPolnjenja() == null) {
+            log.info("Manjka cena polnjenja.");
+            return null;
+        }
+        if (dto.getHitrostPolnjenja() == null) {
+            log.info("Manjka hitrost polnjenja.");
+            return null;
+        }
+        if (dto.getUraOdprtja() == null) {
+            log.info("Manjka ura odprtja.");
+            return null;
+        }
+        if (dto.getUraZaprtja() == null) {
+            log.info("Manjka ura zaprtja.");
+            return null;
+        }
+
         Uporabnik uporabnik = uz.getUporabnikById(dto.getIdLastnik());
         if (uporabnik == null) {
-            log.info("CREATE Postaja: Uporabnik ne obstaja.");
+            log.info("Uporabnik ne obstaja.");
             return null;
         }
 
@@ -69,13 +84,16 @@ public class UpravljanjePolnilnicZrno {
         ps.setTipPrikljucka(dto.getTipPrikljucka());
         ps.setLastnik(uporabnik);
 
-        return pz.createPostaja(ps);
+        PolnilnaPostaja polnilnica = pz.createPostaja(ps);
+        if (polnilnica != null) {
+            return PrikazPostajeDTO.toDto(polnilnica);
+        }
+        return null;
     }
 
-    // NOTE: Je lahko null!
     @Transactional
-    public PolnilnaPostaja posodobiPostajo(UrejanjePostajeDTO dto, int id) {
-        PolnilnaPostaja ps = pz.getPostajaById(dto.getIdPostaja());
+    public PrikazPostajeDTO posodobiPostajo(UrejanjePostajeDTO dto, int id) {
+        PolnilnaPostaja ps = pz.getPostajaById(id);
 
         if (ps == null) {
             log.info("UPDATE Postaja: Postaja ne obstaja.");
@@ -90,9 +108,11 @@ public class UpravljanjePolnilnicZrno {
         novaPs.setUraZaprtja(dto.getUraZaprtja());
         novaPs.setUraOdprtja(dto.getUraOdprtja());
 
-        // TODO: Se lastnika!
-
-        return pz.updatePostaja(id, novaPs);
+        PolnilnaPostaja polnilnica = pz.updatePostaja(id, novaPs);
+        if (polnilnica != null) {
+            return PrikazPostajeDTO.toDto(polnilnica);
+        }
+        return null;
     }
 
     @Transactional
@@ -106,38 +126,38 @@ public class UpravljanjePolnilnicZrno {
         return uspeh;
     }
 
-    public List<Rezervacija> vrniRezervacije(int idPostaje) {
-        PolnilnaPostaja postaja = this.vrniPostajoPoId(idPostaje);
+    /*public List<Rezervacija> vrniRezervacije(int idPostaje) {
+        PolnilnaPostaja postaja = pz.getPostajaById(idPostaje);
         if (postaja != null) {
             return rz.getRezervacijeByPostaja(postaja);
         }
         return null;
-    }
+    }*/
 
-
-
-    public List<PolnilnaPostaja> vrniPostaje(QueryParameters query) {
+    public List<PrikazPostajeDTO> vrniPostaje(QueryParameters query) {
+        log.info("Poizvedujem...");
         return pz.getPostaje(query);
     }
 
-    // NOTE: Lahko vrne null!!
-    public PolnilnaPostaja vrniPostajoPoId(Integer id) {
+    public PrikazPostajeDTO vrniPostajo(Integer id) {
         if (id == null) {
-            log.info("GET Postaja(ID): Manjka argument idPostaja.");
+            log.info("Manjka id");
             return null;
         }
 
         PolnilnaPostaja postaja = pz.getPostajaById(id);
         if (postaja == null) {
-            log.info("GET Postaja(ID): Postaja ne obstaja.");
+            log.info("Postaja ne obstaja.");
+            return null;
         }
-        return postaja;
+
+        return PrikazPostajeDTO.toDto(postaja);
     }
 
-    public UUID izpisiUUID() {
+    /*public UUID izpisiUUID() {
         log.info("Zrno je obsega @ApplicationScope in ima UUID: " + uid);
         return uid;
-    }
+    }*/
 
     public Long vrniSteviloPostaj(QueryParameters query) {
         return pz.getPostajeCount(query);

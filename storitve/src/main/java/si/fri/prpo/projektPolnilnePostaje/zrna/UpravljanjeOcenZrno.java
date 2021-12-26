@@ -45,60 +45,77 @@ public class UpravljanjeOcenZrno {
         //zapiranje virov
     }
 
-    // NOTE: Lahko vrne null!!
+    // TODO: Ce bo cas, dodaj varnostne prepreke za spammanje ocen
     @Transactional
     public PrikazOceneDTO dodajOceno(UrejanjeOceneDTO dto) {
-        log.info("se dela");
         Uporabnik uporabnik = uz.getUporabnikById(dto.getIdUporabnik());
         if (uporabnik == null) {
-            log.info("CREATE Ocena: Uporabnik ne obstaja.");
+            log.info("Uporabnik ne obstaja.");
             return null;
         }
-        log.info("se dela");
 
         PolnilnaPostaja postaja = pz.getPostajaById(dto.getIdPostaja());
         if (postaja == null){
-            log.info("CREATE Ocena: Postaja ne obstaja.");
+            log.info("Postaja ne obstaja.");
             return null;
         }
-        log.info("se dela");
+        Integer ocenaInt = dto.getOcena();
+        if (ocenaInt == null) {
+            log.info("Ocena ni bila podana.");
+            return null;
+        }
+        String komentar = dto.getKomentar();
+        if (komentar == null) {
+            dto.setKomentar("");
+        }
 
         Ocena ocena = new Ocena();
         ocena.setOcena(dto.getOcena());
         ocena.setKomentar(dto.getKomentar());
         ocena.setUporabnik(uporabnik);
-        // TODO uporabnik.getOcene().add(ocena)
         ocena.setPolnilnaPostaja(postaja);
-        postaja.getOcene().add(ocena);
 
         Ocena o = oz.createOcena(ocena);
 
-        return PrikazOceneDTO.toDto(o);
+        if (o != null) {
+            postaja.getOcene().add(o);
+            return PrikazOceneDTO.toDto(o);
+        }
+        return null;
     }
 
-    // NOTE: Je lahko null!
     @Transactional
     public PrikazOceneDTO posodobiOceno(UrejanjeOceneDTO dto, int id) {
-        PolnilnaPostaja postaja = pz.getPostajaById(dto.getIdPostaja());
-        if (postaja == null){
-            log.info("CREATE Ocena: Postaja ne obstaja.");
-            return null;
+        PolnilnaPostaja postaja = null;
+        if (dto.getIdPostaja() != null) {
+            postaja = pz.getPostajaById(dto.getIdPostaja());
+            if (postaja == null){
+                log.info("Postaja ne obstaja.");
+                return null;
+            }
         }
 
-        Uporabnik uporabnik = uz.getUporabnikById(dto.getIdUporabnik());
-        if (uporabnik == null) {
-            log.info("CREATE Ocena: Uporabnik ne obstaja.");
-            return null;
+        Uporabnik uporabnik = null;
+        if (dto.getIdUporabnik() != null) {
+            uporabnik = uz.getUporabnikById(dto.getIdUporabnik());
+            if (uporabnik == null) {
+                log.info("Uporabnik ne obstaja.");
+                return null;
+            }
         }
 
         Ocena ocena = new Ocena();
         ocena.setOcena(dto.getOcena());
         ocena.setKomentar(dto.getKomentar());
         ocena.setUporabnik(uporabnik);
+        ocena.setPolnilnaPostaja(postaja);
 
         Ocena o = oz.updateOcena(id, ocena);
 
-        return PrikazOceneDTO.toDto(o);
+        if (o != null) {
+            return PrikazOceneDTO.toDto(o);
+        }
+        return null;
     }
 
     @Transactional
@@ -114,7 +131,6 @@ public class UpravljanjeOcenZrno {
 
     public PrikazOceneDTO vrniOceno(int id) {
         Ocena o = oz.getOcena(id);
-        log.info("se dela");
         if (o == null) {
             return null;
         }

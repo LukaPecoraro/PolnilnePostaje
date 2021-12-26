@@ -2,6 +2,9 @@ package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazOceneDTO;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazPostajeDTO;
+import si.fri.prpo.projektPolnilnePostaje.entitete.Ocena;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Uporabnik;
 
@@ -17,6 +20,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PolnilnicaZrno {
@@ -41,9 +45,12 @@ public class PolnilnicaZrno {
     private EntityManager em;
 
     //Vrne vse postaje
-    public List<PolnilnaPostaja> getPostaje(QueryParameters query) {
-        List<PolnilnaPostaja> postaje = JPAUtils.queryEntities(em, PolnilnaPostaja.class, query);
-        return postaje;
+    public List<PrikazPostajeDTO> getPostaje(QueryParameters query) {
+        List<PolnilnaPostaja> pol = JPAUtils.queryEntities(em, PolnilnaPostaja.class, query);
+        log.info("Seznam dobljen.");
+        List<PrikazPostajeDTO> dtoji = pol.stream().map(PrikazPostajeDTO::toDto).collect(Collectors.toList());
+        log.info("Seznam konvertiran.");
+        return dtoji;
     }
 
     //vrne eno postajo
@@ -84,6 +91,7 @@ public class PolnilnicaZrno {
 
     @Transactional
     public PolnilnaPostaja createPostaja(PolnilnaPostaja postaja){
+        log.info("Ustvarjam postajo...");
         if (postaja != null){
             em.persist(postaja);
         }

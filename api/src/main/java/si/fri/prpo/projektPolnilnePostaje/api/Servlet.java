@@ -43,11 +43,11 @@ public class Servlet extends HttpServlet {
             mojPrinter.println("Criteria API: " + uporabnik);
         }
 
-        mojPrinter.printf("UpravljanjePolnilnicZrno ima UUID ob 1. klicu: %s\n", upz.izpisiUUID().toString());
-        mojPrinter.printf("UpravljanjePolnilnicZrno ima UUID ob 2. klicu: %s\n", upz.izpisiUUID().toString());
+        //mojPrinter.printf("UpravljanjePolnilnicZrno ima UUID ob 1. klicu: %s\n", upz.izpisiUUID().toString());
+        //mojPrinter.printf("UpravljanjePolnilnicZrno ima UUID ob 2. klicu: %s\n", upz.izpisiUUID().toString());
 
-        mojPrinter.printf("UpravljanjeRezervacijZrno ima UUID ob 1. klicu: %s\n", urz.izpisiUUID().toString());
-        mojPrinter.printf("UpravljanjeRezervacijZrno ima UUID ob 2. klicu: %s\n", urz.izpisiUUID().toString());
+        //mojPrinter.printf("UpravljanjeRezervacijZrno ima UUID ob 1. klicu: %s\n", urz.izpisiUUID().toString());
+        //mojPrinter.printf("UpravljanjeRezervacijZrno ima UUID ob 2. klicu: %s\n", urz.izpisiUUID().toString());
     }
 
 }

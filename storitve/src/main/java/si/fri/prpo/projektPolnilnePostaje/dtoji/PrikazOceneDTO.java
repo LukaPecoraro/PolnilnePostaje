@@ -22,4 +22,10 @@ public class PrikazOceneDTO extends UrejanjeOceneDTO {
         dto.setKomentar(o.getKomentar());
         return dto;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Ocena {\n   idOcena='%d'\n   idPostaja='%d'\n   idUporabnik='%d'\n   ocena='%d'\n   komentar='%s'\n}",
+                this.getIdOcena(), this.getIdPostaja(), this.getIdUporabnik(), this.getOcena(), this.getKomentar());
+    }
 }
