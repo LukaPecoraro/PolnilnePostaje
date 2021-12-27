@@ -1,6 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.zrna;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
+import si.fri.prpo.projektPolnilnePostaje.dtoji.PraznikDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.PrikazRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.PolnilnaPostaja;
@@ -12,6 +13,15 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -57,6 +67,40 @@ public class UpravljanjeRezervacijZrno {
         if (postaja == null){
             log.info("Postaja ne obstaja.");
             return null;
+        }
+        if (dto.getDatumRezervacije() == null || dto.getUraZacetka() == null || dto.getUraKonca() == null) {
+            log.info("Ni vseh podatkov.");
+            return null;
+        }
+
+        Date datum = dto.getDatumRezervacije();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datum);
+
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String country = "SI";
+        String apiKey = "ba38f7ad929c49138365bca59d5265ee";
+
+        Client client = ClientBuilder.newClient();
+        String url = "https://holidays.abstractapi.com/v1/?api_key=" + apiKey +
+                "&country=" + country + "&year=" + year + "&month=" + month + "&day=" + day;
+
+        Response response = client.target(url).request(MediaType.APPLICATION_JSON).get(Response.class);
+        if (response.getStatus() == 200) {
+            try {
+                List<PraznikDTO> prazniki = response.readEntity(new GenericType<List<PraznikDTO>>() {});
+                for (PraznikDTO praznik : prazniki) {
+                    if (praznik.getType().equals("National")) {
+                        log.info("Ni mogoce rezervirati zaradi: " + praznik.toString());
+                        return null;
+                    }
+                }
+            } catch (Exception e) {
+                log.severe(e.getMessage());
+            }
         }
 
         Rezervacija novaRezervacija = new Rezervacija();
