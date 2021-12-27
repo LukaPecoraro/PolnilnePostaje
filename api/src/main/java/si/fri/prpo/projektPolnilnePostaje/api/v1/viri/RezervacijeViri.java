@@ -13,6 +13,7 @@ import si.fri.prpo.projektPolnilnePostaje.dtoji.UrejanjeRezervacijeDTO;
 import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeRezervacijZrno;
 
+import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -35,6 +36,7 @@ public class RezervacijeViri {
     private UpravljanjeRezervacijZrno rz;
 
     @GET
+    @PermitAll
     @Operation(summary = "Seznam rezervacij",
             description = "Vrne seznam rezervacij")
     @APIResponses({

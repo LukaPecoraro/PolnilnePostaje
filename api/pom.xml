@@ -15,6 +15,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <kumuluzee-openapi.version>1.4.0</kumuluzee-openapi.version>
+        <kumuluzee-security.version>1.2.0</kumuluzee-security.version>
+        <kumuluzee-health.version>2.4.3</kumuluzee-health.version>
     </properties>
 
     <dependencies>
@@ -70,6 +72,19 @@
             <groupId>si.fri.prpo.projektPolnilnePostaje</groupId>
             <artifactId>storitve</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.security</groupId>
+            <artifactId>kumuluzee-security</artifactId>
+            <version>${kumuluzee-security.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.health</groupId>
+            <artifactId>kumuluzee-health</artifactId>
+            <version>${kumuluzee-health.version}</version>
         </dependency>
 
     </dependencies>
