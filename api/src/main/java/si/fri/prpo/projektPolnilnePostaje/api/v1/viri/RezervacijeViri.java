@@ -1,6 +1,7 @@
 package si.fri.prpo.projektPolnilnePostaje.api.v1.viri;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
+import com.kumuluz.ee.security.annotations.Secure;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
@@ -14,6 +15,7 @@ import si.fri.prpo.projektPolnilnePostaje.entitete.Rezervacija;
 import si.fri.prpo.projektPolnilnePostaje.zrna.UpravljanjeRezervacijZrno;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -36,7 +38,6 @@ public class RezervacijeViri {
     private UpravljanjeRezervacijZrno rz;
 
     @GET
-    @PermitAll
     @Operation(summary = "Seznam rezervacij",
             description = "Vrne seznam rezervacij")
     @APIResponses({

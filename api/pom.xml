@@ -17,6 +17,7 @@
         <kumuluzee-openapi.version>1.4.0</kumuluzee-openapi.version>
         <kumuluzee-security.version>1.2.0</kumuluzee-security.version>
         <kumuluzee-health.version>2.4.3</kumuluzee-health.version>
+        <keycloak.version>16.1.0</keycloak.version>
     </properties>
 
     <dependencies>
@@ -75,10 +76,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-cdi-weld</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.kumuluz.ee.security</groupId>
-            <artifactId>kumuluzee-security</artifactId>
+            <artifactId>kumuluzee-security-keycloak</artifactId>
             <version>${kumuluzee-security.version}</version>
-            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-jetty94-adapter</artifactId>
+            <version>${keycloak.version}</version>
         </dependency>
 
         <dependency>

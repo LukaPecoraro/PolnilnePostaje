@@ -15,10 +15,11 @@ kumuluzee:
           type: liveness
       disk-space-health-check:
         threshold: 1000
-  openapi-mp:
+  dev:
     scan-libraries:
       - storitve
-      - entitete
+  openapi-mp:
+    enabled: true
   security:
     keycloak:
       json: '{"realm": "users-realm",
