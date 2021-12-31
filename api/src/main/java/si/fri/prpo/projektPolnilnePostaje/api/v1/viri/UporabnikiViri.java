@@ -46,7 +46,7 @@ public class UporabnikiViri {
     @APIResponses({
             @APIResponse(description = "Seznam uporabnikov",
                     responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = Uporabnik.class, type = SchemaType.ARRAY)),
+                    content = @Content(schema = @Schema(implementation = PrikazUporabnikaDTO.class, type = SchemaType.ARRAY)),
                     headers = @Header(name="X-Total-Count", description = "Število vrnjenih uporabnikov"))
     })
     public Response getUporabniki(){
@@ -66,7 +66,7 @@ public class UporabnikiViri {
     @APIResponses({
             @APIResponse(description = "Uporabnik",
                     responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = Uporabnik.class))
+                    content = @Content(schema = @Schema(implementation = PrikazUporabnikaDTO.class))
             )
     })
     @Path("{idUporabnik}")
@@ -84,14 +84,15 @@ public class UporabnikiViri {
             description = "Dodaj novega uporabnika")
     @APIResponses({
             @APIResponse(responseCode = "201",
-                    description = "Uporabnik uspešno dodan"),
+                    description = "Uporabnik uspešno dodan",
+                    content = @Content(schema = @Schema(implementation = PrikazUporabnikaDTO.class))),
             @APIResponse(responseCode = "405",
                     description = "Validacijska napaka")
     })
     public Response addUporabnik(@RequestBody(
             description = "ODT objekt za novega uporabnika",
             required = true,
-            content = @Content(schema = @Schema(implementation = Uporabnik.class)))
+            content = @Content(schema = @Schema(implementation = UrejanjeUporabnikaDTO.class)))
                                          UrejanjeUporabnikaDTO uporabnik) {
         PrikazUporabnikaDTO u = uz.dodajUporabnika(uporabnik);
         return u != null

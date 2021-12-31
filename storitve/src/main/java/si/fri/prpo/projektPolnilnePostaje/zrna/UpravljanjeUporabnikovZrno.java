@@ -39,7 +39,11 @@ public class UpravljanjeUporabnikovZrno {
 
     @Transactional
     public PrikazUporabnikaDTO dodajUporabnika(UrejanjeUporabnikaDTO dto) {
-        if (dto.getEmail() == null || dto.getUporabniskoIme() == null) return null;
+        if (dto.getEmail() == null || dto.getUporabniskoIme() == null) {
+            log.info("Podatki nepopolni.");
+            return null;
+        };
+
         Uporabnik u = new Uporabnik();
         u.setEmail(dto.getEmail());
         u.setUporabniskoIme(dto.getUporabniskoIme());
@@ -48,8 +52,10 @@ public class UpravljanjeUporabnikovZrno {
 
         Uporabnik novUporabnik = uz.createUporabnik(u);
         if (novUporabnik != null) {
-            return PrikazUporabnikaDTO.toDto(novUporabnik);
+            PrikazUporabnikaDTO nov = PrikazUporabnikaDTO.toDto(novUporabnik);
+            return nov;
         }
+        log.info("Uporabnika ni bilo moc ustvariti.");
         return null;
     }
 
